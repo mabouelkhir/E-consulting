@@ -1,4 +1,10 @@
 package com.example.backendstage.Repositories;
 
-public class ReglementRepository {
+import com.example.backendstage.Models.Reglement;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+
+public interface ReglementRepository extends JpaRepository<Reglement,Long> {
 }
