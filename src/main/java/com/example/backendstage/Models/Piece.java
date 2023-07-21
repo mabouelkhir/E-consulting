@@ -6,20 +6,20 @@ import lombok.Data;
 @Entity
 @Table(name = "pieces")
 @Data
-public class Peice {
+public class Piece {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column
     private EPiece nom_piece;
 
 
-    public Peice() {
+    public Piece() {
     }
 
-    public Peice(EPiece nom_piece) {
+    public Piece(EPiece nom_piece) {
         this.nom_piece = nom_piece;
     }
 }
