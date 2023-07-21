@@ -26,4 +26,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     long countByRolesIs(ERole role);
 
     long countByRolesContaining(ERole role);
+
 }

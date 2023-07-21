@@ -9,7 +9,7 @@ import lombok.Data;
 public class Fonction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column
