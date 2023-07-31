@@ -1,7 +1,7 @@
 package com.example.backendstage.Controllers;
 
-import com.example.backendstage.Models.Agent;
 import com.example.backendstage.Models.Piece;
+import com.example.backendstage.Requests.PieceRequest;
 import com.example.backendstage.Services.PieceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +21,12 @@ public class PieceController {
 
     //pour enregistrer une nouvelle piece
     @PostMapping("/Save")
-    public Piece savePiece(@RequestBody Piece piece) {
+    public Piece savePiece(@RequestBody PieceRequest piece) {
         return pieceService.savePiece(piece);
     }
 
     //pour récupérer tous les pieces
-    @GetMapping("/Piece")
+    @GetMapping("/All")
     public List<Piece> getAllPieces() {
         List<Piece> pieces = pieceService.getAllPieces();
         return pieces;

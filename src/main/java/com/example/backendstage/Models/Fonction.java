@@ -1,7 +1,11 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "fonctions")
@@ -11,19 +15,13 @@ public class Fonction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column
-    private EFonction nom_fonction;
+    private String nom_fonction;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "fonctions")
+    private Set<Candidat> candidatSet = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "candidat_id")
-    private Candidat candidat;
 
-    public Fonction(EFonction nom_fonction, Candidat candidat) {
-        this.nom_fonction = nom_fonction;
-        this.candidat = candidat;
-    }
 
-    public Fonction() {
-    }
+
 }

@@ -26,7 +26,7 @@ public class OperateurController {
     }
 
     //pour récupérer tous les operator
-    @GetMapping("/Operator")
+    @GetMapping("/All")
     public List<Operateur> getAllOperateurs() {
         List<Operateur> operateurs = operateurService.getAllOperateurs();
         return operateurs;

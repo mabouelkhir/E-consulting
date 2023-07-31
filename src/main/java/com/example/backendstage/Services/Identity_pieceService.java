@@ -2,6 +2,7 @@ package com.example.backendstage.Services;
 
 import com.example.backendstage.Models.Identity_piece;
 import com.example.backendstage.Repositories.Identity_pieceRepository;
+import com.example.backendstage.Requests.IdentityPieceRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,10 @@ public class Identity_pieceService {
         this.identityPieceRepository = identityPieceRepository;
     }
     // Méthode pour enregistrer une nouvelle pièce d'identité dans la base de données
-    public Identity_piece saveIdentityPiece(Identity_piece identityPiece) {
-        return identityPieceRepository.save(identityPiece);
+    public Identity_piece saveIdentityPiece(IdentityPieceRequest IdentityPieceRequest) {
+        Identity_piece identity_piece = new Identity_piece();
+        identity_piece.setName(IdentityPieceRequest.getName());
+        return identityPieceRepository.save(identity_piece);
     }
 
     // Méthode pour récupérer une pièce d'identité par son ID
@@ -26,6 +29,22 @@ public class Identity_pieceService {
     // Méthode pour récupérer toutes les pièces d'identité de la base de données
     public List<Identity_piece> getAllIdentityPieces() {
         return identityPieceRepository.findAll();
+    }
+    // Méthode pour mettre à jour les informations d'une pièce d'identité
+    public Identity_piece updateIdentityPiece(Long id, Identity_piece updatedIdentityPiece) {
+        // Check if the identity piece with the given ID exists in the database
+        Identity_piece existingIdentityPiece = identityPieceRepository.findById(id).orElse(null);
+        if (existingIdentityPiece == null) {
+            // Handle the case when the identity piece with the given ID does not exist
+            return null;
+        }
+
+        // Update the properties of the existing identity piece with the properties of the updatedIdentityPiece
+        existingIdentityPiece.setName(updatedIdentityPiece.getName());
+
+
+        // Save the updated identity piece to the database
+        return identityPieceRepository.save(existingIdentityPiece);
     }
 
     // Méthode pour supprimer une pièce d'identité par son ID

@@ -26,7 +26,7 @@ public class AgentController {
     }
 
     //pour récupérer tous les agents
-    @GetMapping("/Agent")
+    @GetMapping("/All")
     public List<Agent> getAllAgents() {
         List<Agent> agents = agentService.getAllAgents();
         return agents;

@@ -30,6 +30,25 @@ public class EntretienService {
     public  List<Entretien> getAllEntretiens() {
         return entretienRepository.findAll();
     }
+    // Méthode pour mettre à jour les informations d'un entretien
+    public Entretien updateEntretien(Long id, Entretien updatedEntretien) {
+        // Check if the entretien with the given ID exists in the database
+        Entretien existingEntretien = entretienRepository.findById(id).orElse(null);
+        if (existingEntretien == null) {
+            // Handle the case when the entretien with the given ID does not exist
+            return null;
+        }
+
+        // Update the properties of the existing entretien with the properties of the updatedEntretien
+        existingEntretien.setTitre(updatedEntretien.getTitre());
+        existingEntretien.setDescription(updatedEntretien.getDescription());
+        existingEntretien.setDate_entretien(updatedEntretien.getDate_entretien());
+        existingEntretien.setStatus(updatedEntretien.getStatus());
+        existingEntretien.setCandidat(updatedEntretien.getCandidat());
+
+        // Save the updated entretien to the database
+        return entretienRepository.save(existingEntretien);
+    }
 
     // Méthode pour supprimer un entretien par son ID
     public void deleteEntretienById(Long id) {

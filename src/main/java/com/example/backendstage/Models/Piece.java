@@ -1,7 +1,13 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "pieces")
@@ -11,15 +17,12 @@ public class Piece {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column
-    private EPiece nom_piece;
+    private String nom_piece;
+
+    @OneToMany(mappedBy = "piece")
+    private List<DossierPieces> dossierPieces;
 
 
-    public Piece() {
-    }
 
-    public Piece(EPiece nom_piece) {
-        this.nom_piece = nom_piece;
-    }
 }

@@ -1,7 +1,12 @@
 package com.example.backendstage.Services;
 
+import com.example.backendstage.Models.Candidat;
+import com.example.backendstage.Models.Dossier;
 import com.example.backendstage.Models.Piece;
 import com.example.backendstage.Repositories.PieceRepository;
+import com.example.backendstage.Requests.DossierRequest;
+import com.example.backendstage.Requests.PieceRequest;
+import com.example.backendstage.exception.AlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +23,16 @@ public class PieceService {
     }
 
     // Méthode pour enregistrer une nouvelle pièce dans la base de données
-    public Piece savePiece(Piece piece) {
-        return pieceRepository.save(piece);
+    public Piece savePiece(PieceRequest pieceRequest) {
+        Piece piece= new Piece();
+
+            piece.setNom_piece(pieceRequest.getNom_piece());
+
+
+            pieceRepository.save(piece);
+
+
+        return piece;
     }
 
     // Méthode pour récupérer une pièce par son ID

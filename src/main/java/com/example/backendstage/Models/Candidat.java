@@ -1,10 +1,14 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "candidats")
@@ -22,7 +26,7 @@ public class Candidat {
     @Column
     private String prenom;
     @Column
-    private String date_naissance;
+    private Date date_naissance;
     @Column
     private String sexe;
     @Column
@@ -33,14 +37,21 @@ public class Candidat {
     private String email;
     @Column
     private  String cin;
+    @Column(length = 500000)
     @Lob
     private byte[] image;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
-    private List<Fonction> fonctions;
+    @ManyToMany
+    @JoinTable(
+            name = "candidat_fonctions",
+            joinColumns = @JoinColumn(name = "candidat_id"),
+            inverseJoinColumns = @JoinColumn(name = "fonction_id"))
+    private Set<Fonction> fonctions = new HashSet<>();
+
     @Column
     private String obs;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
-    private List<Identity_piece> identity_pieces;
+    @JsonIgnore
+    @OneToMany(mappedBy = "candidat")
+    private List<Candidat_IdentityPieces> candidatIdentityPieces;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
     private List<Entretien> entretiens;
 
@@ -55,6 +66,9 @@ public class Candidat {
     private Agent agent;
 
     private String status;
+    @Lob
+    @Column
+    private byte[] cv;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
     private List<Reglement> reglements;
 

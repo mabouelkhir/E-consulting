@@ -21,6 +21,7 @@ public class Reglement {
     @ManyToOne
     @JoinColumn(name = "candidat_id")
     private Candidat candidat;
+    private String type_reglement;
 
     private LocalDateTime date_reglement;
 

@@ -15,6 +15,10 @@ public class Employeur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @Column
+    private String nom;
+    @Column
+    private String prenom;
 
     @Column
     private String num_tel;
@@ -30,5 +34,8 @@ public class Employeur {
 
     @Column
     private String city;
+    @Column(length = 500000)
+    @Lob
+    private byte[] image;
 
 }

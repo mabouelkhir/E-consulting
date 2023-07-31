@@ -24,6 +24,9 @@ public class Agent {
     private String tel;
     @Column
     private String adresse;
+    @Column(length = 500000)
+    @Lob
+    private byte[] image;
 
 
 }

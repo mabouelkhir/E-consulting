@@ -34,22 +34,12 @@ public class User {
     @NotBlank
     private String password;
 
-    private int admin ;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
     private boolean accountVerified;
 
-    private int failedLoginAttempts;
-
-    private boolean loginDisabled;
-
-    private  String verificationToken;
-
-    private  String passwordToken;
-
-    private LocalDateTime passTokenExpiryTime ;
 
     public User() {
     }

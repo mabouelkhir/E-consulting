@@ -25,7 +25,7 @@ public class RoleController {
     }
 
     //pour récupérer tous les roles
-    @GetMapping("/Role")
+    @GetMapping("/All")
     public List<Role> getAllRoles() {
         List<Role> roles = roleService.getAllRoles();
         return roles;

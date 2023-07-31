@@ -33,6 +33,26 @@ import java.util.List;
             return agentRepository.findAll();
         }
 
+    // Méthode pour mettre à jour les informations d'un agent
+    public Agent updateAgent(Long id, Agent updatedAgent) {
+        // Check if the agent with the given ID exists in the database
+        Agent existingAgent = agentRepository.findById(id).orElse(null);
+        if (existingAgent == null) {
+            // Handle the case when the agent with the given ID does not exist
+            return null;
+        }
+
+        // Update the properties of the existing agent with the properties of the updatedAgent
+        existingAgent.setNom(updatedAgent.getNom());
+        existingAgent.setPrenom(updatedAgent.getPrenom());
+        existingAgent.setSexe(updatedAgent.getSexe());
+        existingAgent.setEmail(updatedAgent.getEmail());
+        existingAgent.setTel(updatedAgent.getTel());
+        existingAgent.setAdresse(updatedAgent.getAdresse());
+
+        // Save the updated agent to the database
+        return agentRepository.save(existingAgent);
+    }
         // Méthode pour supprimer un agent par son ID
         public void deleteAgentById(Long id) {
             agentRepository.deleteById(id);

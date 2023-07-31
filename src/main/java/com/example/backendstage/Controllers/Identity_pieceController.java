@@ -1,7 +1,8 @@
 package com.example.backendstage.Controllers;
 
-import com.example.backendstage.Models.Agent;
 import com.example.backendstage.Models.Identity_piece;
+import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
+import com.example.backendstage.Requests.IdentityPieceRequest;
 import com.example.backendstage.Services.Identity_pieceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ public class Identity_pieceController {
 
     //pour enregistrer un nouvel identity
     @PostMapping("/Save")
-    public Identity_piece saveIdentity_piece(@RequestBody Identity_piece identity_piece) {
+    public Identity_piece saveIdentity_piece(@RequestBody IdentityPieceRequest identity_piece) {
         return identity_pieceService.saveIdentityPiece(identity_piece);
     }
 
     //pour récupérer tous les identiy
-    @GetMapping("/Identity_piece")
+    @GetMapping("/All")
     public List<Identity_piece> getAllIdentity_pieces() {
         List<Identity_piece> identity_pieces = identity_pieceService.getAllIdentityPieces();
         return identity_pieces;

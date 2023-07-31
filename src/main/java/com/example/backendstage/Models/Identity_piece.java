@@ -1,9 +1,11 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "identity_pieces")
@@ -14,14 +16,8 @@ public class Identity_piece {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column
-    private Eidentity_piece type;
-    @Column
-    private String code;
-    @Column
-    private LocalDateTime date_validite;
-
-    @ManyToOne
-    @JoinColumn(name = "candidat_id")
-    private Candidat candidat;
+    private String name;
+@JsonIgnore
+    @OneToMany(mappedBy = "identityPiece")
+    private List<Candidat_IdentityPieces> candidatIdentityPieces;
 }

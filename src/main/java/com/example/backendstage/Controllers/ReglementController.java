@@ -26,7 +26,7 @@ public class ReglementController {
     }
 
     //pour récupérer tous les reglements
-    @GetMapping("/Reglement")
+    @GetMapping("/All")
     public List<Reglement> getAllReglements() {
         List<Reglement> reglementss = reglementService.getAllReglements();
         return reglementss;

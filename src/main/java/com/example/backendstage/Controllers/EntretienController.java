@@ -27,7 +27,7 @@ public class EntretienController {
     }
 
     //pour récupérer tous les Entretiens
-    @GetMapping("/Entretien")
+    @GetMapping("/All")
     public List<Entretien> getAllEntretiens() {
         List<Entretien> entretiens = entretienService.getAllEntretiens();
         return entretiens;

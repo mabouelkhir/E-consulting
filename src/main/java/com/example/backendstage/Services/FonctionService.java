@@ -17,7 +17,7 @@ public class FonctionService {
     }
 
     // Méthode pour enregistrer une nouvelle fonction dans la base de données
-    public Fonction saveFonction(Fonction fonction) {
+    public Fonction saveFonctionRequest(Fonction fonction) {
         return fonctionRepository.save(fonction);
     }
 
@@ -30,9 +30,26 @@ public class FonctionService {
     public List<Fonction> getAllFonctions() {
         return fonctionRepository.findAll();
     }
+    // Méthode pour mettre à jour les informations d'une fonction
+    public Fonction updateFonction(Long id, Fonction updatedFonction) {
+        // Check if the fonction with the given ID exists in the database
+        Fonction existingFonction = fonctionRepository.findById(id).orElse(null);
+        if (existingFonction == null) {
+            // Handle the case when the fonction with the given ID does not exist
+            return null;
+        }
+
+        // Update the properties of the existing fonction with the properties of the updatedFonction
+        existingFonction.setNom_fonction(updatedFonction.getNom_fonction());
+
+        // Save the updated fonction to the database
+        return fonctionRepository.save(existingFonction);
+    }
 
     // Méthode pour supprimer une fonction par son ID
     public void deleteFonctionById(Long id) {
         fonctionRepository.deleteById(id);
     }
+
+
 }

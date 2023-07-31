@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "operateurs")
 @Data
@@ -27,9 +29,13 @@ public class Operateur {
     @Column
     private String adresse;
     @Column
-    private String date_naissance;
+    private EStatus status;
+    @Column
+    private Timestamp date_naissance;
     @Column
     private  String cin;
+    @Column(length = 500000)
     @Lob
     private byte[] image;
+
 }

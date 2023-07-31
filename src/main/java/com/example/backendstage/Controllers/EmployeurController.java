@@ -27,7 +27,7 @@ public class EmployeurController {
     }
 
     //pour récupérer tous les Employeurs
-    @GetMapping("/Employeur")
+    @GetMapping("/All")
     public List<Employeur> getAllEmployeurs() {
         List<Employeur> Employeurs = employeurService.getAllEmployeurs();
         return Employeurs;
