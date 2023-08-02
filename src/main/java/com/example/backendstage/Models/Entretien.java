@@ -1,14 +1,18 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "entretiens")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Entretien {
     @Id
@@ -28,6 +32,7 @@ public class Entretien {
     private String status;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "candidat_id")
     private Candidat candidat;
 }

@@ -1,15 +1,19 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 
 @Entity
 @Table(name = "reglements")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 
 public class Reglement {
@@ -19,6 +23,7 @@ public class Reglement {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "candidat_id")
     private Candidat candidat;
     private String type_reglement;

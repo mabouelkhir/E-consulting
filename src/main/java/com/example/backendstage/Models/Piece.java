@@ -1,8 +1,9 @@
 package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -11,7 +12,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "pieces")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Piece {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +25,7 @@ public class Piece {
     private String nom_piece;
 
     @OneToMany(mappedBy = "piece")
+    @JsonManagedReference
     private List<DossierPieces> dossierPieces;
 
 

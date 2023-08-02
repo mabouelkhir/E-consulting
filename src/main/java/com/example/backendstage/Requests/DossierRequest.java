@@ -1,11 +1,13 @@
 package com.example.backendstage.Requests;
 
 import com.example.backendstage.Models.Candidat;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
-
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DossierRequest {
     private String numeroDossier;
 

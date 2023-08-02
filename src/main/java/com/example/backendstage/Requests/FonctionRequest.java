@@ -5,5 +5,8 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class EmployeurRequest {
+@NoArgsConstructor
+
+public class FonctionRequest {
+    private String nom_fonction;
 }

@@ -2,15 +2,19 @@ package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Table(name = "dossiers")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 
 public class Dossier {
@@ -31,8 +35,8 @@ public class Dossier {
     private String status;
     @Column
     private String note;
-    @JsonIgnore
     @OneToMany(mappedBy = "dossier")
+    @JsonManagedReference
     private List<DossierPieces> dossierPieces;
 
 

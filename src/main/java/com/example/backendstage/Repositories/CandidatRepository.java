@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 public interface CandidatRepository extends JpaRepository<Candidat,Long> {
     Candidat findByEmail(String email);
-    Candidat findCandidatByCin(String cin);
-    Optional<Candidat> findById(Long id);
 
 }

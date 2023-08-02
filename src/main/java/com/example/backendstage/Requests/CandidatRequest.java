@@ -1,12 +1,15 @@
 package com.example.backendstage.Requests;
 
 import com.example.backendstage.Models.Fonction;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CandidatRequest {
     private String adresse;
     private int children;
@@ -18,7 +21,7 @@ public class CandidatRequest {
     private String situation_fam;
     private String status;
     private String tl;
-    private Set<Fonction> fonction;
+    private Set<Fonction> fonctions;
 
 
 

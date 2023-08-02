@@ -1,11 +1,7 @@
 package com.example.backendstage.Controllers;
 
-import com.example.backendstage.Models.Agent;
-import com.example.backendstage.Models.Candidat;
-import com.example.backendstage.Models.Operateur;
-import com.example.backendstage.Repositories.AgentRepository;
-import com.example.backendstage.Repositories.CandidatRepository;
-import com.example.backendstage.Repositories.OperateurRepository;
+import com.example.backendstage.Models.*;
+import com.example.backendstage.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +25,10 @@ public class ImageController {
     CandidatRepository candidatRepository;
     @Autowired
     OperateurRepository operateurRepository;
+    @Autowired
+    private AdminRepository adminRepository;
+    @Autowired
+    private EmployeurRepository employeurRepository;
 
     @GetMapping("/{type}/{id}/image")
     public ResponseEntity<?> getImage(@PathVariable String type, @PathVariable Long id) {
@@ -59,6 +59,14 @@ public class ImageController {
                 if (optionalOperateur.isPresent()) {
                     Operateur operateur = optionalOperateur.get();
                     imageBytes = operateur.getImage();
+                    contentType = MediaType.IMAGE_JPEG_VALUE;
+                }
+                break;
+            case "admin":
+                Optional<Admin> optionalAdmin = adminRepository.findById(id);
+                if (optionalAdmin.isPresent()) {
+                    Admin admin = optionalAdmin.get();
+                    imageBytes = admin.getImage();
                     contentType = MediaType.IMAGE_JPEG_VALUE;
                 }
                 break;
@@ -103,6 +111,34 @@ public class ImageController {
                     try {
                         operateur.setImage(file.getBytes());
                         operateurRepository.save(operateur);
+                        return new ResponseEntity<>("Image has been uploaded successfully.", HttpStatus.OK);
+                    } catch (IOException e) {
+                        return new ResponseEntity<>("Image exeption.", HttpStatus.NO_CONTENT);
+                    }
+                }
+                else {
+                    return new ResponseEntity<>("User not Found for this " + type + " with ID " + id, HttpStatus.NOT_FOUND);
+                }
+            case "employeur":
+                Employeur employeur = employeurRepository.getById(id);
+                if (employeur !=null) {
+                    try {
+                        employeur.setImage(file.getBytes());
+                        employeurRepository.save(employeur);
+                        return new ResponseEntity<>("Image has been uploaded successfully.", HttpStatus.OK);
+                    } catch (IOException e) {
+                        return new ResponseEntity<>("Image exeption.", HttpStatus.NO_CONTENT);
+                    }
+                }
+                else {
+                    return new ResponseEntity<>("User not Found for this " + type + " with ID " + id, HttpStatus.NOT_FOUND);
+                }
+            case "admin":
+                Admin admin = adminRepository.getById(id);
+                if (admin !=null) {
+                    try {
+                        admin.setImage(file.getBytes());
+                        adminRepository.save(admin);
                         return new ResponseEntity<>("Image has been uploaded successfully.", HttpStatus.OK);
                     } catch (IOException e) {
                         return new ResponseEntity<>("Image exeption.", HttpStatus.NO_CONTENT);

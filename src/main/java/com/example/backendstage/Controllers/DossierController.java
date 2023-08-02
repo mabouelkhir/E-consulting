@@ -3,6 +3,7 @@ package com.example.backendstage.Controllers;
 import com.example.backendstage.Models.Candidat;
 import com.example.backendstage.Models.Dossier;
 import com.example.backendstage.Models.DossierPieces;
+import com.example.backendstage.Requests.DossierPieceRequest;
 import com.example.backendstage.exception.AlreadyExistsException;
 import com.example.backendstage.Requests.DossierRequest;
 import com.example.backendstage.Services.DossierService;
@@ -41,6 +42,15 @@ public class DossierController {
     public ResponseEntity<?> ajouterPiecesAuDossier(@PathVariable Long id_dossier,@PathVariable Long id_piece) {
         try {
             DossierPieces dossierPieces = dossierService.ajouterPiecesAuDossier(id_dossier, id_piece);
+            return new ResponseEntity<>(dossierPieces, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+    @PutMapping("/{dossierId}/dossier/{pieceId}/update")
+    public ResponseEntity<?> updateDossierPiece(@PathVariable Long dossierId, @PathVariable Long pieceId, @RequestBody DossierPieceRequest dossierPieceRequest) {
+        try {
+            DossierPieces dossierPieces = dossierService.updateDossierPiece(dossierId, pieceId,dossierPieceRequest);
             return new ResponseEntity<>(dossierPieces, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);

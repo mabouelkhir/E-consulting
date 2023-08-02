@@ -1,15 +1,19 @@
 package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "identity_pieces")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Identity_piece {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +21,7 @@ public class Identity_piece {
     private Long id;
 
     private String name;
-@JsonIgnore
     @OneToMany(mappedBy = "identityPiece")
+    @JsonManagedReference
     private List<Candidat_IdentityPieces> candidatIdentityPieces;
 }

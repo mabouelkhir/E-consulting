@@ -1,11 +1,15 @@
 package com.example.backendstage.Requests;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Candidat_IdentityPieceRequest {
+
 
     private String etat;
     private String code;

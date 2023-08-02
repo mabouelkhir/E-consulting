@@ -2,6 +2,7 @@ package com.example.backendstage.Services;
 
 import com.example.backendstage.Models.Fonction;
 import com.example.backendstage.Repositories.FonctionRepository;
+import com.example.backendstage.Requests.FonctionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,11 @@ public class FonctionService {
     }
 
     // Méthode pour enregistrer une nouvelle fonction dans la base de données
-    public Fonction saveFonctionRequest(Fonction fonction) {
-        return fonctionRepository.save(fonction);
+    public Fonction saveFonctionRequest(FonctionRequest fonction) {
+        Fonction fonction1 = new Fonction();
+        fonction1.setNom_fonction(fonction.getNom_fonction());
+
+        return fonctionRepository.save(fonction1);
     }
 
     // Méthode pour récupérer une fonction par son ID

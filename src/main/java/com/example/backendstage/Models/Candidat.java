@@ -1,20 +1,21 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "candidats")
-@Data
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Candidat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,19 +41,20 @@ public class Candidat {
     @Column(length = 500000)
     @Lob
     private byte[] image;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "candidat_fonctions",
-            joinColumns = @JoinColumn(name = "candidat_id"),
-            inverseJoinColumns = @JoinColumn(name = "fonction_id"))
-    private Set<Fonction> fonctions = new HashSet<>();
+            joinColumns ={ @JoinColumn(name = "candidat_id",referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "fonction_id",referencedColumnName = "id")})
+    private Set<Fonction> fonctions ;
 
     @Column
     private String obs;
-    @JsonIgnore
     @OneToMany(mappedBy = "candidat")
+    @JsonManagedReference
     private List<Candidat_IdentityPieces> candidatIdentityPieces;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
+    @JsonManagedReference
     private List<Entretien> entretiens;
 
     @Column
@@ -70,6 +72,7 @@ public class Candidat {
     @Column
     private byte[] cv;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
+    @JsonManagedReference
     private List<Reglement> reglements;
 
     @Column
@@ -77,8 +80,8 @@ public class Candidat {
 
     @Column
     private int children;
-
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
 

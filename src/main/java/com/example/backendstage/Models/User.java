@@ -3,7 +3,7 @@ package com.example.backendstage.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -16,7 +16,9 @@ import java.util.Set;
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "email")
         })
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 public class User {
 
     @Id

@@ -1,7 +1,9 @@
 package com.example.backendstage.Requests;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 public class AgentRequest {
 }

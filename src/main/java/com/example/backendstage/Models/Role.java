@@ -1,12 +1,15 @@
 package com.example.backendstage.Models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +19,7 @@ public class Role {
     @Column
     private ERole name;
 
-    public Role() {
-    }
+
     public Role(ERole name) {
         this.name = name;
     }

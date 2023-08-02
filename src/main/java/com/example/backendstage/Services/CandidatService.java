@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -78,25 +79,39 @@ public class CandidatService {
     }
 
     public Candidat assignFonctionToCandidat(Long candidatId, Long fonctionId) {
-        Set<Fonction> fonctionSet = null;
-        Candidat candidat = candidatRepository.findById(candidatId).get();
-        Fonction fonction = fonctionRepository.findById(fonctionId).get();
-        fonctionSet = candidat.getFonctions();
-        fonctionSet.add(fonction);
-        candidat.setFonctions(fonctionSet);
-        return candidatRepository.save(candidat);
+        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
+        Fonction fonction = fonctionRepository.findById(fonctionId).orElse(null);
 
+        if (candidat != null && fonction != null) {
+            Set<Fonction> fonctionSet = candidat.getFonctions();
+            if (fonctionSet == null) {
+                fonctionSet = new HashSet<>();
+            }
+
+            fonctionSet.add(fonction);
+            candidat.setFonctions(fonctionSet);
+            candidatRepository.save(candidat);
+        }
+
+        return candidat;
     }
+
     public Candidat removeFonctionToCandidat(Long candidatId, Long fonctionId) {
-        Set<Fonction> fonctionSet = null;
-        Candidat candidat = candidatRepository.findById(candidatId).get();
-        Fonction fonction = fonctionRepository.findById(fonctionId).get();
-        fonctionSet = candidat.getFonctions();
-        fonctionSet.remove(fonction);
-        candidat.setFonctions(fonctionSet);
-        return candidatRepository.save(candidat);
+        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
+        Fonction fonction = fonctionRepository.findById(fonctionId).orElse(null);
 
+        if (candidat != null && fonction != null) {
+            Set<Fonction> fonctionSet = candidat.getFonctions();
+            if (fonctionSet != null) {
+                fonctionSet.remove(fonction);
+                candidat.setFonctions(fonctionSet);
+                candidatRepository.save(candidat);
+            }
+        }
+
+        return candidat;
     }
+
     public Candidat_IdentityPieces ajouterIdentityPiecesAuCandidat(Long candidat_id,Long piece_id, Candidat_IdentityPieceRequest candidatIdentityPieceRequest){
         Candidat candidat = candidatRepository.findById(candidat_id).orElseThrow(EntityNotFoundException::new);
         Identity_piece piece = identity_pieceRepository.findById(piece_id).orElseThrow(EntityNotFoundException::new);

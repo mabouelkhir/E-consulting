@@ -6,6 +6,7 @@ import com.example.backendstage.Models.DossierPieces;
 import com.example.backendstage.Models.Piece;
 import com.example.backendstage.Repositories.DossierPiecesRepository;
 import com.example.backendstage.Repositories.PieceRepository;
+import com.example.backendstage.Requests.DossierPieceRequest;
 import com.example.backendstage.exception.AlreadyExistsException;
 import com.example.backendstage.Repositories.CandidatRepository;
 import com.example.backendstage.Requests.DossierRequest;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,6 +101,26 @@ public DossierPieces ajouterPiecesAuDossier(Long dossier_id,Long piece_id){
     return dossierPieces;
 
 }
+    public DossierPieces updateDossierPiece(Long dossierId, Long pieceId, DossierPieceRequest dossierPieceRequest) {
+        Dossier dossier = dossierRepository.findById(dossierId).orElseThrow(EntityNotFoundException::new);
+        Piece piece = pieceRepository.findById(pieceId).orElseThrow(EntityNotFoundException::new);
+
+        DossierPieces dossierPiece = dossierPiecesRepository.findByDossierAndPiece(dossier, piece);
+
+        if (dossierPiece == null) {
+            // Handle the case when the DossierPieces entry is not found for the given Dossier and Piece.
+            // You can throw an exception or handle it as per your requirement.
+            throw new EntityNotFoundException("DossierPiece entry not found for the given Dossier and Piece.");
+        }
+
+        // Set the fields you want to update
+        dossierPiece.setDelivered(true);
+        dossierPiece.setDeliveryDate(LocalDate.now());
+        dossierPiece.setNote(dossierPieceRequest.getNote());
+
+        dossierPiecesRepository.save(dossierPiece);
+        return dossierPiece;
+    }
     // Méthode pour supprimer un dossier par son ID
     public void deleteDossierById(Long id) {
         dossierRepository.deleteById(id);

@@ -2,14 +2,17 @@ package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "fonctions")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Fonction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +21,8 @@ public class Fonction {
     @Column
     private String nom_fonction;
     @JsonIgnore
-    @ManyToMany(mappedBy = "fonctions")
-    private Set<Candidat> candidatSet = new HashSet<>();
+    @ManyToMany(mappedBy = "fonctions" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Candidat> candidatSet ;
 
 
 

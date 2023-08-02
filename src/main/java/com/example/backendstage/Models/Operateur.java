@@ -2,13 +2,16 @@ package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "operateurs")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 
 public class Operateur {

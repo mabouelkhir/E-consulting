@@ -1,8 +1,11 @@
 package com.example.backendstage.Controllers;
 
 import com.example.backendstage.Models.Fonction;
+import com.example.backendstage.Requests.FonctionRequest;
 import com.example.backendstage.Services.FonctionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +24,13 @@ public class FonctionController {
 
     //pour enregistrer une nouvelle fonnction
     @PostMapping("/Save")
-    public Fonction saveFonction(@RequestBody Fonction fonction) {
-        return fonctionService.saveFonctionRequest(fonction);
+    public ResponseEntity<?> saveFonction(@RequestBody FonctionRequest  fonction) {
+        try{
+            Fonction fonction1 = fonctionService.saveFonctionRequest(fonction);
+            return new ResponseEntity<>(fonction1, HttpStatus.OK);
+        }catch (Exception e){
+             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     //pour récupérer tous les agents

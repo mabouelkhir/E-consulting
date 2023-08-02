@@ -1,12 +1,16 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Candidat_IdentityPieces {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +22,10 @@ public class Candidat_IdentityPieces {
 
 
     @ManyToOne
+    @JsonBackReference
     private Candidat candidat;
 
     @ManyToOne
+    @JsonBackReference
     private Identity_piece identityPiece;
 }

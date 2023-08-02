@@ -1,14 +1,18 @@
 package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "employeurs")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Employeur {
     @Id
@@ -30,6 +34,7 @@ public class Employeur {
     @Column
     private String code_emp;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "employeur")
+    @JsonManagedReference
     private List<Candidat> candidatList;
 
     @Column
