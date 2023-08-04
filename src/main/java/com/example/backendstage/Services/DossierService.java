@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DossierService {
@@ -87,20 +88,24 @@ public class DossierService {
         // Save the updated dossier to the database
         return dossierRepository.save(existingDossier);
     }
-public DossierPieces ajouterPiecesAuDossier(Long dossier_id,Long piece_id){
+    public List<DossierPieces> ajouterPiecesAuDossier(Long dossier_id) {
         Dossier dossier = dossierRepository.findById(dossier_id).orElseThrow(EntityNotFoundException::new);
-        Piece piece = pieceRepository.findById(piece_id).orElseThrow(EntityNotFoundException::new);
-        DossierPieces dossierPieces = new DossierPieces();
-        dossierPieces.setDossier(dossier);
-    dossierPieces.setPiece(piece);
-    dossierPieces.setDelivered(false);
-    dossierPieces.setDeliveryDate(null);
-    dossierPieces.setNote("No note yet");
 
-    dossierPiecesRepository.save(dossierPieces);
-    return dossierPieces;
+        List<Piece> pieces = pieceRepository.findAll();
 
-}
+        List<DossierPieces> dossierPiecesList = pieces.stream().map(piece -> {
+            DossierPieces dossierPieces = new DossierPieces();
+            dossierPieces.setDossier(dossier);
+            dossierPieces.setPiece(piece);
+            dossierPieces.setDelivered(false);
+            dossierPieces.setDeliveryDate(null);
+            dossierPieces.setNote("No note yet");
+            return dossierPieces;
+        }).collect(Collectors.toList());
+
+        dossierPiecesRepository.saveAll(dossierPiecesList);
+        return dossierPiecesList;
+    }
     public DossierPieces updateDossierPiece(Long dossierId, Long pieceId, DossierPieceRequest dossierPieceRequest) {
         Dossier dossier = dossierRepository.findById(dossierId).orElseThrow(EntityNotFoundException::new);
         Piece piece = pieceRepository.findById(pieceId).orElseThrow(EntityNotFoundException::new);

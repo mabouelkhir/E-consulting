@@ -2,6 +2,7 @@ package com.example.backendstage.Controllers;
 
 import com.example.backendstage.Models.Agent;
 import com.example.backendstage.Models.Entretien;
+import com.example.backendstage.Requests.EntretionRequest;
 import com.example.backendstage.Services.EntretienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,9 @@ public class EntretienController {
 
 
     //pour enregistrer un nouvel Entretien
-    @PostMapping("/Save")
-    public Entretien saveEntretien(@RequestBody Entretien entretien) {
-        return entretienService.saveEntretien(entretien);
+    @PostMapping("/Save/{CandidatId}")
+    public Entretien saveEntretien(@RequestBody EntretionRequest entretionRequest,@PathVariable Long CandidatId) {
+        return entretienService.saveEntretien(entretionRequest,CandidatId);
     }
 
     //pour récupérer tous les Entretiens

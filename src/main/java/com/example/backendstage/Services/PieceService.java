@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PieceService {
@@ -33,6 +34,12 @@ public class PieceService {
 
 
         return piece;
+    }
+    public List<Long> getAllPieceIds() {
+        List<Piece> pieces = pieceRepository.findAll();
+        return pieces.stream()
+                .map(Piece::getId)
+                .collect(Collectors.toList());
     }
 
     // Méthode pour récupérer une pièce par son ID

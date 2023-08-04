@@ -29,7 +29,7 @@ public class DossierController {
     //pour enregistrer un nouvel dossier
 
     @PostMapping("/{idCandidat}/add")
-    public ResponseEntity<?> ajouterDossierPatient(@PathVariable Long idCandidat, @RequestBody DossierRequest dossierRequest) {
+    public ResponseEntity<?> ajouterDossierCandidat(@PathVariable Long idCandidat, @RequestBody DossierRequest dossierRequest) {
         try {
             Dossier dossierCandidat = dossierService.saveDossier(idCandidat, dossierRequest);
             return new ResponseEntity<>(dossierCandidat, HttpStatus.OK);
@@ -38,14 +38,9 @@ public class DossierController {
         }
     }
 
-    @PostMapping("/{id_dossier}/dossier/{id_piece}")
-    public ResponseEntity<?> ajouterPiecesAuDossier(@PathVariable Long id_dossier,@PathVariable Long id_piece) {
-        try {
-            DossierPieces dossierPieces = dossierService.ajouterPiecesAuDossier(id_dossier, id_piece);
-            return new ResponseEntity<>(dossierPieces, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+    @PostMapping("/{dossierId}")
+    public List<DossierPieces> ajouterPiecesAuDossier(@PathVariable Long dossierId) {
+        return dossierService.ajouterPiecesAuDossier(dossierId);
     }
     @PutMapping("/{dossierId}/dossier/{pieceId}/update")
     public ResponseEntity<?> updateDossierPiece(@PathVariable Long dossierId, @PathVariable Long pieceId, @RequestBody DossierPieceRequest dossierPieceRequest) {

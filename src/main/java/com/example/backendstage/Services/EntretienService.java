@@ -1,7 +1,10 @@
 package com.example.backendstage.Services;
 
+import com.example.backendstage.Models.Candidat;
 import com.example.backendstage.Models.Entretien;
+import com.example.backendstage.Repositories.CandidatRepository;
 import com.example.backendstage.Repositories.EntretienRepository;
+import com.example.backendstage.Requests.EntretionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +13,27 @@ import java.util.List;
 @Service
 public class EntretienService {
     private final EntretienRepository entretienRepository;
+    private final CandidatRepository condidatRepository;
 
     @Autowired
-    public EntretienService(EntretienRepository entretienRepository) {
+    public EntretienService(EntretienRepository entretienRepository, CandidatRepository condidatRepository) {
         this.entretienRepository = entretienRepository;
+        this.condidatRepository = condidatRepository;
     }
 
+
+
     // Méthode pour enregistrer un nouvel entretien dans la base de données
-    public Entretien saveEntretien(Entretien entretien) {
+    public Entretien saveEntretien(EntretionRequest entretienRequest,Long CandidatId) {
+        Candidat candidat = condidatRepository.findById(CandidatId).get();
+        Entretien entretien = new Entretien();
+        entretien.setCandidat(candidat);
+        entretien.setDate_entretien(entretienRequest.getDate_entretien());
+        entretien.setTitre(entretienRequest.getTitre());
+        entretien.setStatus(entretienRequest.getStatus());
+        entretien.setDescription(entretienRequest.getDescription());
+
+
         return entretienRepository.save(entretien);
     }
 
