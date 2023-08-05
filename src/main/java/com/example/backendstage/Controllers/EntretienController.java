@@ -2,7 +2,9 @@ package com.example.backendstage.Controllers;
 
 import com.example.backendstage.Models.Agent;
 import com.example.backendstage.Models.Entretien;
-import com.example.backendstage.Requests.EntretionRequest;
+import com.example.backendstage.Models.Reglement;
+import com.example.backendstage.Requests.EntretienRequest;
+import com.example.backendstage.Requests.ReglementRequest;
 import com.example.backendstage.Services.EntretienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,8 @@ public class EntretienController {
 
     //pour enregistrer un nouvel Entretien
     @PostMapping("/Save/{CandidatId}")
-    public Entretien saveEntretien(@RequestBody EntretionRequest entretionRequest,@PathVariable Long CandidatId) {
-        return entretienService.saveEntretien(entretionRequest,CandidatId);
+    public Entretien saveEntretien(@RequestBody EntretienRequest entretien,@PathVariable Long CandidatId) {
+        return entretienService.saveEntretien(entretien,CandidatId);
     }
 
     //pour récupérer tous les Entretiens
@@ -33,7 +35,10 @@ public class EntretienController {
         List<Entretien> entretiens = entretienService.getAllEntretiens();
         return entretiens;
     }
-
+    @PutMapping("/{id}/Update")
+    public Entretien updateEntretien(@PathVariable Long id, @RequestBody EntretienRequest entretien){
+        return  entretienService.updateEntretien(id,entretien);
+    }
 
     //pour supprimer un Entretien par son ID
     @DeleteMapping("/{id}")
