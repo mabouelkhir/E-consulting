@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntretionRequest {
+public class EntretienRequest {
     private String titre;
 
     private String description;
