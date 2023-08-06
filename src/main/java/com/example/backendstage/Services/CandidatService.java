@@ -10,7 +10,9 @@ import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -126,5 +128,34 @@ public class CandidatService {
         candidatIdentityPiecesRepository.save(candidatIdentityPieces);
         return candidatIdentityPieces;
 
+    }
+    public void uploadCV(Long id, MultipartFile file) throws IOException {
+        Candidat candidate = candidatRepository.findById(id).orElseThrow(() -> new RuntimeException("Candidate not found!"));
+
+        // Validate the file (e.g., check if it's a PDF)
+        if (!file.getContentType().equalsIgnoreCase("application/pdf")) {
+            throw new IllegalArgumentException("Only PDF files are allowed!");
+        }
+
+        candidate.setCv(file.getBytes());
+        candidatRepository.save(candidate);
+    }
+    public List<Candidat> getCandidatesByStatus(EStatus status) {
+        return candidatRepository.findCandidatsByStatus(status);
+    }
+    public List<Candidat> getCandidatesByFunction(Fonction function) {
+        return candidatRepository.findByFonctions(function);
+    }
+    public List<Candidat> getCandidatesByEmployeur(Employeur employeur) {
+        return candidatRepository.findByEmployeur(employeur);
+    }
+    public List<Candidat> getCandidatesByAgent(Agent agent) {
+        return candidatRepository.findByAgent(agent);
+    }
+    public long countCandidatesByStatus(EStatus status) {
+        return candidatRepository.countByStatus(status);
+    }
+    public List<Candidat> getCandidatesByGroup(String group) {
+        return candidatRepository.findByGroupe(group);
     }
 }

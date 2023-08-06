@@ -1,5 +1,6 @@
 package com.example.backendstage.Requests;
 
+import com.example.backendstage.Models.EStatus;
 import com.example.backendstage.Models.Fonction;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class CandidatRequest {
     private String obs;
     private String sexe;
     private String situation_fam;
-    private String status;
+    private EStatus status;
     private String tl;
     private Set<Fonction> fonctions;
 

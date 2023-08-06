@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "admins")
 @Getter
@@ -27,6 +29,9 @@ public class Admin {
     private String tel;
     @Column
     private String adresse;
+    @Column
+    private LocalDateTime createdAt;
+
     @Column(length = 500000)
     @Lob
     private byte[] image;

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 @Getter
 @Setter
@@ -29,4 +30,6 @@ public class RegisterRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    private LocalDateTime createdAt;
 }

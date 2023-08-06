@@ -3,6 +3,7 @@ package com.example.backendstage.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -43,7 +44,7 @@ public class User {
     private boolean accountVerified;
 
 
-    public User() {
+    public User(@NotBlank @Size(min = 3) String firstName, @NotBlank @Size(min = 3) String lastName, @NotBlank @Email String email, @NotBlank @Size(min = 6, max = 40) String password, LocalDateTime createdAt) {
     }
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;

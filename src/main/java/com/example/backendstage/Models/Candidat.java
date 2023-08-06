@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,8 @@ public class Candidat {
     private Date date_naissance;
     @Column
     private String sexe;
+    @Column
+    private LocalDateTime createdAt;
     @Column
     private String adresse;
     @Column
@@ -67,9 +70,9 @@ public class Candidat {
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
-    private String status;
+    private EStatus status;
     @Lob
-    @Column
+    @Column(length = 500000)
     private byte[] cv;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
     @JsonManagedReference

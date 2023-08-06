@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "operateurs")
@@ -31,6 +32,9 @@ public class Operateur {
     private String tel;
     @Column
     private String adresse;
+    @Column
+    private LocalDateTime createdAt;
+
     @Column
     private EStatus status;
     @Column

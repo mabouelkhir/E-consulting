@@ -54,7 +54,7 @@ public class UserController {
         }
         // Create new user's account
         User user = new User(signUpRequest.getFirstName(),signUpRequest.getLastName() ,signUpRequest.getEmail(),
-                signUpRequest.getPassword());
+                signUpRequest.getPassword(),signUpRequest.getCreatedAt());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -68,6 +68,7 @@ public class UserController {
                 candidat.setNom(signUpRequest.getLastName());
                 candidat.setPrenom(signUpRequest.getFirstName());
                 candidat.setEmail(signUpRequest.getEmail());
+                candidat.setCreatedAt(LocalDateTime.now());
                 candidatRepository.save(candidat);
             }
         } else {
@@ -83,6 +84,7 @@ public class UserController {
                             admin.setNom(signUpRequest.getLastName());
                             admin.setPrenom(signUpRequest.getFirstName());
                             admin.setEmail(signUpRequest.getEmail());
+                            admin.setCreatedAt(LocalDateTime.now());
                             adminRepository.save(admin);
                         }
 
@@ -96,6 +98,8 @@ public class UserController {
                             operateur.setNom(signUpRequest.getLastName());
                             operateur.setPrenom(signUpRequest.getFirstName());
                             operateur.setEmail(signUpRequest.getEmail());
+                            operateur.setCreatedAt(LocalDateTime.now());
+
                             operateurRepository.save(operateur);
                         }
 
@@ -109,6 +113,7 @@ public class UserController {
                             agent.setNom(signUpRequest.getLastName());
                             agent.setPrenom(signUpRequest.getFirstName());
                             agent.setEmail(signUpRequest.getEmail());
+                            agent.setCreatedAt(LocalDateTime.now());
                             agentRepository.save(agent);
                         }
                         break;
@@ -121,6 +126,7 @@ public class UserController {
                             candidat.setNom(signUpRequest.getLastName());
                             candidat.setPrenom(signUpRequest.getFirstName());
                             candidat.setEmail(signUpRequest.getEmail());
+                            candidat.setCreatedAt(LocalDateTime.now());
                             candidatRepository.save(candidat);
                         }
 
@@ -134,6 +140,7 @@ public class UserController {
                             employeur.setNom(signUpRequest.getLastName());
                             employeur.setPrenom(signUpRequest.getFirstName());
                             employeur.setEmail(signUpRequest.getEmail());
+                            employeur.setCreatedAt(LocalDateTime.now());
                             employeurRepository.save(employeur);
                         }
 

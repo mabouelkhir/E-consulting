@@ -6,10 +6,16 @@ import com.example.backendstage.Requests.CandidatRequest;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
 import com.example.backendstage.Services.CandidatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +46,33 @@ public class CandidatController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
+    }
+    @PostMapping("/{id}/cv")
+    public ResponseEntity<String> uploadCV(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            candidatService.uploadCV(id, file);
+            return ResponseEntity.ok("CV uploaded successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CV upload failed!");
+        }
+    }
+    @GetMapping("/{id}/cv")
+    public ResponseEntity<InputStreamResource> downloadCV(@PathVariable Long id) {
+        Candidat candidat = candidatService.getCandidatById(id);
+        if (candidat == null || candidat.getCv() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] cvData = candidat.getCv();
+        String cvFileName = "candidat_cv_" + candidat.getId() + "_"+candidat.getNom()+"_"+ candidat.getPrenom() +".pdf";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData(cvFileName, cvFileName);
+
+        InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(cvData));
+        return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/Update")
@@ -72,4 +105,15 @@ public class CandidatController {
     public void  deleteCandidatById(@PathVariable Long id) {
         candidatService.deleteCandidatById(id);
     }
+    @GetMapping("/countByStatus/{status}")
+    public ResponseEntity<Long> countCandidatesByStatus(@PathVariable EStatus status) {
+        long count = candidatService.countCandidatesByStatus(status);
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+    @GetMapping("/group/{group}")
+    public ResponseEntity<List<Candidat>> getCandidatesByGroup(@PathVariable String group) {
+        List<Candidat> candidates = candidatService.getCandidatesByGroup(group);
+        return new ResponseEntity<>(candidates, HttpStatus.OK);
+    }
 }
+
