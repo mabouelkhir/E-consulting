@@ -1,4 +1,6 @@
 package com.example.backendstage.Services;
+import com.example.backendstage.Models.EStatus;
+import com.example.backendstage.Models.Candidat;
 
 import com.example.backendstage.Models.*;
 import com.example.backendstage.Repositories.Candidat_IdentityPiecesRepository;
@@ -158,4 +160,14 @@ public class CandidatService {
     public List<Candidat> getCandidatesByGroup(String group) {
         return candidatRepository.findByGroupe(group);
     }
+    public List<Candidat> getActiveCandidates() {
+        EStatus activeStatus = EStatus.ACTIF;
+        return candidatRepository.findCandidatsByStatus(activeStatus);
+    }
+
+    public List<Candidat> getInactiveCandidates() {
+        EStatus inactiveStatus = EStatus.INACTIF;
+        return candidatRepository.findCandidatsByStatus(inactiveStatus);
+    }
+
 }

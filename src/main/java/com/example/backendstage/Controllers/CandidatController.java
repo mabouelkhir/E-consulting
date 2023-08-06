@@ -115,5 +115,16 @@ public class CandidatController {
         List<Candidat> candidates = candidatService.getCandidatesByGroup(group);
         return new ResponseEntity<>(candidates, HttpStatus.OK);
     }
+    //récupérer les candidats actifs
+    @GetMapping("/candidats/actifs")
+    public List<Candidat> getActiveCandidats() {
+        return candidatService.getActiveCandidates();
+    }
+    //récupérer les candidats inactifs
+    @GetMapping("/candidats/inactifs")
+    public List<Candidat> getInactiveCandidats() {
+        return candidatService.getInactiveCandidates();
+    }
+
 }
 

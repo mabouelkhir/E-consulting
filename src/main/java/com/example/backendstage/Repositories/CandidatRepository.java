@@ -22,4 +22,5 @@ public interface CandidatRepository extends JpaRepository<Candidat,Long> {
     List<Candidat> findByGroupe(String group);
 
 
+
 }
