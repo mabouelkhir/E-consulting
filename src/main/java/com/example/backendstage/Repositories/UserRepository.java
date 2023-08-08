@@ -22,9 +22,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     long count();
 
-    long countByRolesIs(ERole role);
 
-    long countByRolesContaining(ERole role);
+
+
     User findByEmail(String email);
 
 }

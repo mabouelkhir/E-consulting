@@ -1,5 +1,6 @@
 package com.example.backendstage.Requests;
 
+import com.example.backendstage.Models.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -13,21 +14,17 @@ import java.util.Set;
 @NoArgsConstructor
 
 public class RegisterRequest {
-    @NotBlank
     @Size(min = 3)
     private String firstName;
 
-    @NotBlank
     @Size(min = 3)
     private String lastName;
 
-    @NotBlank
     @Email
     private String email;
 
-    private Set<String> role;
+    private Role role;
 
-    @NotBlank
     @Size(min = 6, max = 40)
     private String password;
 

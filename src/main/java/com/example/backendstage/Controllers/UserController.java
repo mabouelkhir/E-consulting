@@ -53,32 +53,24 @@ public class UserController {
                     .body("error: email is already in use!");
         }
         // Create new user's account
-        User user = new User(signUpRequest.getFirstName(),signUpRequest.getLastName() ,signUpRequest.getEmail(),
-                signUpRequest.getPassword(),signUpRequest.getCreatedAt());
+        User user = new User();
+        user.setFirstName(signUpRequest.getFirstName());
+        user.setLastName(signUpRequest.getLastName());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(signUpRequest.getPassword());
+        user.setRole(signUpRequest.getRole());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setAccountVerified(false);
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+        Role strRoles = signUpRequest.getRole();
+        String roleName = String.valueOf(strRoles.getName());
+
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.Candidat)
                     .orElseThrow(() -> new RuntimeException("error: role is not found."));
-            roles.add(userRole);
-            if(candidatRepository.findByEmail(signUpRequest.getEmail())==null){
-                Candidat candidat = new Candidat();
-                candidat.setNom(signUpRequest.getLastName());
-                candidat.setPrenom(signUpRequest.getFirstName());
-                candidat.setEmail(signUpRequest.getEmail());
-                candidat.setCreatedAt(LocalDateTime.now());
-                candidatRepository.save(candidat);
-            }
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
+        } else if (roleName.equals("Admin")){
 
-                        Role admRole = roleRepository.findByName(ERole.Admin)
-                                .orElseThrow(() -> new RuntimeException("error: role is not found."));
-                        roles.add(admRole);
                         if(adminRepository.findByEmail(signUpRequest.getEmail())==null) {
                             Admin admin = new Admin();
                             admin.setNom(signUpRequest.getLastName());
@@ -87,71 +79,51 @@ public class UserController {
                             admin.setCreatedAt(LocalDateTime.now());
                             adminRepository.save(admin);
                         }
+        }else if (roleName.equals("Operateur")) {
 
-                        break;
-                    case "operateur":
-                        Role oprRole = roleRepository.findByName(ERole.Operateur)
-                                .orElseThrow(() -> new RuntimeException("error: role is not found."));
-                        roles.add(oprRole);
-                        if(operateurRepository.findByEmail(signUpRequest.getEmail())==null) {
-                            Operateur operateur = new Operateur();
-                            operateur.setNom(signUpRequest.getLastName());
-                            operateur.setPrenom(signUpRequest.getFirstName());
-                            operateur.setEmail(signUpRequest.getEmail());
-                            operateur.setCreatedAt(LocalDateTime.now());
+            if (operateurRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Operateur operateur = new Operateur();
+                operateur.setNom(signUpRequest.getLastName());
+                operateur.setPrenom(signUpRequest.getFirstName());
+                operateur.setEmail(signUpRequest.getEmail());
+                operateur.setCreatedAt(LocalDateTime.now());
 
-                            operateurRepository.save(operateur);
-                        }
+                operateurRepository.save(operateur);
+            }
+        }else if (roleName.equals("Agent")) {
 
-                        break;
-                    case "agent":
-                        Role agnRole = roleRepository.findByName(ERole.Agent)
-                                .orElseThrow(() -> new RuntimeException("error: role is not found."));
-                        roles.add(agnRole);
-                        if(agentRepository.findByEmail(signUpRequest.getEmail())==null){
-                            Agent agent = new Agent();
-                            agent.setNom(signUpRequest.getLastName());
-                            agent.setPrenom(signUpRequest.getFirstName());
-                            agent.setEmail(signUpRequest.getEmail());
-                            agent.setCreatedAt(LocalDateTime.now());
-                            agentRepository.save(agent);
-                        }
-                        break;
-                    case "candidat":
-                        Role canRole = roleRepository.findByName(ERole.Candidat)
-                                .orElseThrow(() -> new RuntimeException("error: role is not found."));
-                        roles.add(canRole);
-                        if(candidatRepository.findByEmail(signUpRequest.getEmail())==null) {
-                            Candidat candidat = new Candidat();
-                            candidat.setNom(signUpRequest.getLastName());
-                            candidat.setPrenom(signUpRequest.getFirstName());
-                            candidat.setEmail(signUpRequest.getEmail());
-                            candidat.setCreatedAt(LocalDateTime.now());
-                            candidatRepository.save(candidat);
-                        }
+            if (agentRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Agent agent = new Agent();
+                agent.setNom(signUpRequest.getLastName());
+                agent.setPrenom(signUpRequest.getFirstName());
+                agent.setEmail(signUpRequest.getEmail());
+                agent.setCreatedAt(LocalDateTime.now());
+                agentRepository.save(agent);
+            }
+        }else if (roleName.equals("Candidat")) {
 
-                        break;
-                    case "employeur":
-                        Role empRole = roleRepository.findByName(ERole.Employeur)
-                                .orElseThrow(() -> new RuntimeException("error: role is not found."));
-                        roles.add(empRole);
-                        if(employeurRepository.findByEmail(signUpRequest.getEmail())==null) {
-                            Employeur employeur = new Employeur();
-                            employeur.setNom(signUpRequest.getLastName());
-                            employeur.setPrenom(signUpRequest.getFirstName());
-                            employeur.setEmail(signUpRequest.getEmail());
-                            employeur.setCreatedAt(LocalDateTime.now());
-                            employeurRepository.save(employeur);
-                        }
+            if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Candidat candidat = new Candidat();
+                candidat.setNom(signUpRequest.getLastName());
+                candidat.setPrenom(signUpRequest.getFirstName());
+                candidat.setEmail(signUpRequest.getEmail());
+                candidat.setCreatedAt(LocalDateTime.now());
+                candidatRepository.save(candidat);
+            }
+        }else if (roleName
+                .equals("Employeur")) {
 
-                        break;
-                    default:
-                        throw new RuntimeException("Error: Invalid role specified.");
-                }
-            });
+            if (employeurRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Employeur employeur = new Employeur();
+                employeur.setNom(signUpRequest.getLastName());
+                employeur.setPrenom(signUpRequest.getFirstName());
+                employeur.setEmail(signUpRequest.getEmail());
+                employeur.setCreatedAt(LocalDateTime.now());
+                employeurRepository.save(employeur);
+            }
+        } else {
+            throw new RuntimeException("Error: Invalid role specified.");
         }
-        user.setRoles(roles);
-        user.setCreatedAt(LocalDateTime.now());
 
         userRepository.save(user);
         //notificationService.createUserNotification(user);
