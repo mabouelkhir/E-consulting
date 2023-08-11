@@ -45,7 +45,7 @@ public class User {
     private boolean accountVerified;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id") // Adjust the column name as needed
     private Role role;
 

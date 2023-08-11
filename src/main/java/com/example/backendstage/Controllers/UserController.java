@@ -6,6 +6,7 @@ import com.example.backendstage.Models.*;
 import com.example.backendstage.Repositories.*;
 import com.example.backendstage.Requests.RegisterRequest;
 import com.example.backendstage.Services.UserService;
+import com.example.backendstage.exception.NotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,20 +67,21 @@ public class UserController {
         String roleName = String.valueOf(strRoles.getName());
 
 
+        Long candidatId = null;
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.Candidat)
                     .orElseThrow(() -> new RuntimeException("error: role is not found."));
-        } else if (roleName.equals("Admin")){
+        } else if (roleName.equals("Admin")) {
 
-                        if(adminRepository.findByEmail(signUpRequest.getEmail())==null) {
-                            Admin admin = new Admin();
-                            admin.setNom(signUpRequest.getLastName());
-                            admin.setPrenom(signUpRequest.getFirstName());
-                            admin.setEmail(signUpRequest.getEmail());
-                            admin.setCreatedAt(LocalDateTime.now());
-                            adminRepository.save(admin);
-                        }
-        }else if (roleName.equals("Operateur")) {
+            if (adminRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Admin admin = new Admin();
+                admin.setNom(signUpRequest.getLastName());
+                admin.setPrenom(signUpRequest.getFirstName());
+                admin.setEmail(signUpRequest.getEmail());
+                admin.setCreatedAt(LocalDateTime.now());
+                adminRepository.save(admin);
+            }
+        } else if (roleName.equals("Operateur")) {
 
             if (operateurRepository.findByEmail(signUpRequest.getEmail()) == null) {
                 Operateur operateur = new Operateur();
@@ -90,7 +92,7 @@ public class UserController {
 
                 operateurRepository.save(operateur);
             }
-        }else if (roleName.equals("Agent")) {
+        } else if (roleName.equals("Agent")) {
 
             if (agentRepository.findByEmail(signUpRequest.getEmail()) == null) {
                 Agent agent = new Agent();
@@ -100,7 +102,7 @@ public class UserController {
                 agent.setCreatedAt(LocalDateTime.now());
                 agentRepository.save(agent);
             }
-        }else if (roleName.equals("Candidat")) {
+        } else if (roleName.equals("Candidat")) {
 
             if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
                 Candidat candidat = new Candidat();
@@ -109,25 +111,24 @@ public class UserController {
                 candidat.setEmail(signUpRequest.getEmail());
                 candidat.setCreatedAt(LocalDateTime.now());
                 candidatRepository.save(candidat);
-            }
-        }else if (roleName
-                .equals("Employeur")) {
+                candidatId = candidat.getId();
 
-            if (employeurRepository.findByEmail(signUpRequest.getEmail()) == null) {
-                Employeur employeur = new Employeur();
-                employeur.setNom(signUpRequest.getLastName());
-                employeur.setPrenom(signUpRequest.getFirstName());
-                employeur.setEmail(signUpRequest.getEmail());
-                employeur.setCreatedAt(LocalDateTime.now());
-                employeurRepository.save(employeur);
             }
+
         } else {
             throw new RuntimeException("Error: Invalid role specified.");
         }
 
         userRepository.save(user);
         //notificationService.createUserNotification(user);
-        return ok("user registered successfully!  Un email a été envoyé au proprietaire du compte");
+        if (candidatId != null) {
+            return ResponseEntity.ok("User registered successfully! Candidat ID: " + candidatId);
+        } else {
+            // Continue with your existing code after registration
+            // ...
+            //notificationService.createUserNotification(user);
+            return ResponseEntity.ok("User registered successfully!");
+        }
     }
 
     //pour récupérer tous les users
@@ -141,5 +142,13 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void  deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
+    }
+    @PutMapping("/{id}/activer")
+    public void  activateUser(@PathVariable Long id) throws NotFoundException {
+            userService.activateUser(id);
+    }
+    @PutMapping("/{id}/desactiver")
+    public void  desactivateUser(@PathVariable Long id) throws NotFoundException {
+        userService.desactivateUser(id);
     }
 }
