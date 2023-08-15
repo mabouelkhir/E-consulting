@@ -32,8 +32,12 @@ public class FonctionController {
              return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
+    @PutMapping("/{fonctionID}/update")
+    public Fonction updateFonction(@PathVariable Long fonctionID,@RequestBody FonctionRequest fonctionRequest){
+        return fonctionService.updateFonction(fonctionID,fonctionRequest);
+    }
 
-    //pour récupérer tous les agents
+    //pour récupérer tous les fonction
     @GetMapping("/All")
     public List<Fonction> getAllFonctions() {
         List<Fonction> fonctions = fonctionService.getAllFonctions();

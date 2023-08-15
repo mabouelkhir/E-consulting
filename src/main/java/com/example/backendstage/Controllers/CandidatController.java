@@ -5,6 +5,7 @@ import com.example.backendstage.Repositories.CandidatRepository;
 import com.example.backendstage.Requests.CandidatRequest;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
 import com.example.backendstage.Services.CandidatService;
+import com.example.backendstage.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -98,6 +99,15 @@ public class CandidatController {
     public Optional<Candidat> getCandidat(@PathVariable Long id) {
         Optional<Candidat> candidat= candidatRepository.findById(id);
         return candidat;
+    }
+
+    @PutMapping("/{id}/ACTIF")
+    public void  activateCandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.activateCandidat(id);
+    }
+    @PutMapping("/{id}/INACTIF")
+    public void  desactivateCandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.desactivateCandidat(id);
     }
 
     //pour supprimer un Candidat par son ID

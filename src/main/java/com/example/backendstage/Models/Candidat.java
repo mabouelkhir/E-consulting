@@ -39,8 +39,7 @@ public class Candidat {
     private String num_tel;
     @Column
     private String email;
-    @Column
-    private  String cin;
+
     @Column(length = 500000)
     @Lob
     private byte[] image;

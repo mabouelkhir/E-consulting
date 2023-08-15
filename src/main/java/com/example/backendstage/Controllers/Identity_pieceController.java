@@ -1,10 +1,13 @@
 package com.example.backendstage.Controllers;
 
+import com.example.backendstage.Models.Fonction;
 import com.example.backendstage.Models.Identity_piece;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
+import com.example.backendstage.Requests.FonctionRequest;
 import com.example.backendstage.Requests.IdentityPieceRequest;
 import com.example.backendstage.Services.Identity_pieceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +28,10 @@ public class Identity_pieceController {
     @PostMapping("/Save")
     public Identity_piece saveIdentity_piece(@RequestBody IdentityPieceRequest identity_piece) {
         return identity_pieceService.saveIdentityPiece(identity_piece);
+    }
+    @PutMapping("/{identity_pieceID}/update")
+    public Identity_piece updatedIdentityPiece(@PathVariable Long identity_pieceID, @RequestBody IdentityPieceRequest identityPieceRequest){
+        return identity_pieceService.updatedIdentityPiece(identity_pieceID,identityPieceRequest);
     }
 
     //pour récupérer tous les identiy

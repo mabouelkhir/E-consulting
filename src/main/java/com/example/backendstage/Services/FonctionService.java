@@ -35,7 +35,7 @@ public class FonctionService {
         return fonctionRepository.findAll();
     }
     // Méthode pour mettre à jour les informations d'une fonction
-    public Fonction updateFonction(Long id, Fonction updatedFonction) {
+    public Fonction updateFonction(Long id, FonctionRequest updatedFonction) {
         // Check if the fonction with the given ID exists in the database
         Fonction existingFonction = fonctionRepository.findById(id).orElse(null);
         if (existingFonction == null) {

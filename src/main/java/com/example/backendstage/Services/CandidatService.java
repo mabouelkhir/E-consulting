@@ -3,12 +3,10 @@ import com.example.backendstage.Models.EStatus;
 import com.example.backendstage.Models.Candidat;
 
 import com.example.backendstage.Models.*;
-import com.example.backendstage.Repositories.Candidat_IdentityPiecesRepository;
-import com.example.backendstage.Repositories.FonctionRepository;
-import com.example.backendstage.Repositories.Identity_pieceRepository;
+import com.example.backendstage.Repositories.*;
 import com.example.backendstage.Requests.CandidatRequest;
-import com.example.backendstage.Repositories.CandidatRepository;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
+import com.example.backendstage.exception.NotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ import java.util.Set;
 public class CandidatService {
 
     private final CandidatRepository candidatRepository;
+    private final UserRepository userRepository;
     private final FonctionRepository fonctionRepository;
     private final Identity_pieceRepository identity_pieceRepository;
     private final Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository;
@@ -32,11 +31,13 @@ public class CandidatService {
     public CandidatService(CandidatRepository candidatRepository,
                            FonctionRepository fonctionRepository,
                            Identity_pieceRepository identity_pieceRepository,
-                           Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository) {
+                           Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository,
+                           UserRepository userRepository) {
         this.candidatRepository = candidatRepository;
         this.fonctionRepository = fonctionRepository;
         this.identity_pieceRepository = identity_pieceRepository;
         this.candidatIdentityPiecesRepository = candidatIdentityPiecesRepository;
+        this.userRepository = userRepository;
     }
 
     // Méthode pour enregistrer un nouveau candidat dans la base de données
@@ -66,7 +67,6 @@ public class CandidatService {
         existingCandidat.setSexe(updatedCandidat.getSexe());
         existingCandidat.setAdresse(updatedCandidat.getAdresse());
         existingCandidat.setNum_tel(updatedCandidat.getNum_tel());
-        existingCandidat.setCin(updatedCandidat.getCin());
         existingCandidat.setObs(updatedCandidat.getObs());
         existingCandidat.setTl(updatedCandidat.getTl());
         existingCandidat.setStatus(updatedCandidat.getStatus());
@@ -79,7 +79,12 @@ public class CandidatService {
 
     // Méthode pour supprimer un candidat par son ID
     public void deleteCandidatById(Long id) {
+        Candidat exCandidat = candidatRepository.findById(id).get();
+        String email = exCandidat.getEmail();
         candidatRepository.deleteById(id);
+        User user = userRepository.findByEmail(email);
+        Long userID = user.getId();
+        userRepository.deleteById(userID);
     }
 
     public Candidat assignFonctionToCandidat(Long candidatId, Long fonctionId) {
@@ -169,5 +174,18 @@ public class CandidatService {
         EStatus inactiveStatus = EStatus.INACTIF;
         return candidatRepository.findCandidatsByStatus(inactiveStatus);
     }
+
+    public void activateCandidat (Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setStatus(EStatus.ACTIF);
+        candidatRepository.save(candidat);
+    }
+
+    public void desactivateCandidat (Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setStatus(EStatus.INACTIF);
+        candidatRepository.save(candidat);
+    }
+
 
 }

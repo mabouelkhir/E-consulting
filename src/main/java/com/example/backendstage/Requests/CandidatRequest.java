@@ -14,7 +14,6 @@ import java.util.Set;
 public class CandidatRequest {
     private String adresse;
     private int children;
-    private String cin;
     private Date date_naissance;
     private String num_tel;
     private String obs;
@@ -22,7 +21,6 @@ public class CandidatRequest {
     private String situation_fam;
     private EStatus status;
     private String tl;
-    private Set<Fonction> fonctions;
 
 
 

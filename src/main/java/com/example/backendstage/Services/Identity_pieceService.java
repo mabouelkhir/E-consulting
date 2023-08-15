@@ -1,7 +1,9 @@
 package com.example.backendstage.Services;
 
+import com.example.backendstage.Models.Fonction;
 import com.example.backendstage.Models.Identity_piece;
 import com.example.backendstage.Repositories.Identity_pieceRepository;
+import com.example.backendstage.Requests.FonctionRequest;
 import com.example.backendstage.Requests.IdentityPieceRequest;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,18 @@ public class Identity_pieceService {
         Identity_piece identity_piece = new Identity_piece();
         identity_piece.setName(IdentityPieceRequest.getName());
         return identityPieceRepository.save(identity_piece);
+    }
+    public Identity_piece updatedIdentityPiece(Long id, IdentityPieceRequest updatedIdentity_piece) {
+        // Check if the piece with the given ID exists in the database
+        Identity_piece existingIdentity_piece = identityPieceRepository.findById(id).orElse(null);
+        if (existingIdentity_piece == null) {
+            // Handle the case when the piece with the given ID does not exist
+            return null;
+        }
+        // Update the properties of the existing piece with the properties of the updatedIdentity_piece
+        existingIdentity_piece.setName(updatedIdentity_piece.getName());
+        // Save the updated piece to the database
+        return identityPieceRepository.save(existingIdentity_piece);
     }
 
     // Méthode pour récupérer une pièce d'identité par son ID

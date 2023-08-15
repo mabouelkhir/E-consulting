@@ -110,6 +110,7 @@ public class UserController {
                 candidat.setPrenom(signUpRequest.getFirstName());
                 candidat.setEmail(signUpRequest.getEmail());
                 candidat.setCreatedAt(LocalDateTime.now());
+                candidat.setStatus(EStatus.INACTIF);
                 candidatRepository.save(candidat);
                 candidatId = candidat.getId();
 
