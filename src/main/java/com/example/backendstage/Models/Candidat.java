@@ -77,19 +77,43 @@ public class Candidat {
     @JsonManagedReference
     private List<Reglement> reglements;
 
+
+
     @Column
     private String situation_fam;
+    @Column
+    private String Ref_contrat;
 
     @Column
     private int children;
+    @Column
+    private boolean visaRecu;
+    @Column
+    private boolean tlsRecu;
+    @Column
+    private boolean ofiiRecu;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
 
 
+    public void setVisaColor(String newColor) {
+    }
 
+    public void setTLSColor(String newColor) {
+    }
 
+    public void setOFFIColor(String newColor) {
+    }
 
+    public void setOFFIReçu(Boolean newOFFIState) {
+    }
 
+    public void setTLSReçu(Boolean newTLSState) {
+    }
+
+    public void setVisaReçu(Boolean newVisaState) {
+    }
 }

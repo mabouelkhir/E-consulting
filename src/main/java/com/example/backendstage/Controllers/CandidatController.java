@@ -4,6 +4,7 @@ import com.example.backendstage.Models.*;
 import com.example.backendstage.Repositories.CandidatRepository;
 import com.example.backendstage.Requests.CandidatRequest;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
+import com.example.backendstage.Services.CandidatNotFoundException;
 import com.example.backendstage.Services.CandidatService;
 import com.example.backendstage.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/candidat")
 public class CandidatController {
@@ -58,6 +61,7 @@ public class CandidatController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CV upload failed!");
         }
     }
+
     @GetMapping("/{id}/cv")
     public ResponseEntity<InputStreamResource> downloadCV(@PathVariable Long id) {
         Candidat candidat = candidatService.getCandidatById(id);
@@ -75,6 +79,23 @@ public class CandidatController {
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(cvData));
         return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
     }
+
+
+
+    @PutMapping("/candidat/{candidatId}/{colorKey}")
+    public ResponseEntity<?> updateColorForCandidat(@PathVariable Long candidatId, @PathVariable String colorKey) {
+        try {
+            Candidat candidat = candidatService.updateColorForCandidat(candidatId, colorKey);
+            return ResponseEntity.ok(candidat);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la mise à jour de la couleur : " + e.getMessage());
+        } catch (CandidatNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 
     @PutMapping("/{id}/Update")
     public Candidat updateCandidat(@PathVariable Long id,@RequestBody CandidatRequest candidat){return  candidatService.updateCandidat(id,candidat);}
@@ -108,6 +129,30 @@ public class CandidatController {
     @PutMapping("/{id}/INACTIF")
     public void  desactivateCandidat(@PathVariable Long id) throws NotFoundException {
         candidatService.desactivateCandidat(id);
+    }
+    @PutMapping("/{id}/ACTIFTLS")
+    public void  activateTLSCandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.activateCandidatTLS(id);
+    }
+    @PutMapping("/{id}/INACTIFTLS")
+    public void  desactivateTLSCandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.desactivateCandidatTLS(id);
+    }
+    @PutMapping("/{id}/ACTIFVISA")
+    public void  activateVISACandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.activateCandidatVISA(id);
+    }
+    @PutMapping("/{id}/INACTIFVISA")
+    public void  desactivateVISACandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.desactivateCandidatVISA(id);
+    }
+    @PutMapping("/{id}/ACTIFOFII")
+    public void  activateOFIICandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.activateCandidatOFII(id);
+    }
+    @PutMapping("/{id}/INACTIFOFII")
+    public void  desactivateOFIICandidat(@PathVariable Long id) throws NotFoundException {
+        candidatService.desactivateCandidatOFII(id);
     }
 
     //pour supprimer un Candidat par son ID

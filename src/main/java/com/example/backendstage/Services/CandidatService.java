@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -54,6 +55,7 @@ public class CandidatService {
     public List<Candidat> getAllCandidats() {
         return candidatRepository.findAll();
     }
+
     // Méthode pour mettre à jour les informations d'un candidat
     public Candidat updateCandidat(Long id, CandidatRequest updatedCandidat) {
         // Check if the candidat with the given ID exists in the database
@@ -121,7 +123,7 @@ public class CandidatService {
         return candidat;
     }
 
-    public Candidat_IdentityPieces ajouterIdentityPiecesAuCandidat(Long candidat_id,Long piece_id, Candidat_IdentityPieceRequest candidatIdentityPieceRequest){
+    public Candidat_IdentityPieces ajouterIdentityPiecesAuCandidat(Long candidat_id, Long piece_id, Candidat_IdentityPieceRequest candidatIdentityPieceRequest) {
         Candidat candidat = candidatRepository.findById(candidat_id).orElseThrow(EntityNotFoundException::new);
         Identity_piece piece = identity_pieceRepository.findById(piece_id).orElseThrow(EntityNotFoundException::new);
         Candidat_IdentityPieces candidatIdentityPieces = new Candidat_IdentityPieces();
@@ -136,6 +138,7 @@ public class CandidatService {
         return candidatIdentityPieces;
 
     }
+
     public void uploadCV(Long id, MultipartFile file) throws IOException {
         Candidat candidate = candidatRepository.findById(id).orElseThrow(() -> new RuntimeException("Candidate not found!"));
 
@@ -147,24 +150,31 @@ public class CandidatService {
         candidate.setCv(file.getBytes());
         candidatRepository.save(candidate);
     }
+
     public List<Candidat> getCandidatesByStatus(EStatus status) {
         return candidatRepository.findCandidatsByStatus(status);
     }
+
     public List<Candidat> getCandidatesByFunction(Fonction function) {
         return candidatRepository.findByFonctions(function);
     }
+
     public List<Candidat> getCandidatesByEmployeur(Employeur employeur) {
         return candidatRepository.findByEmployeur(employeur);
     }
+
     public List<Candidat> getCandidatesByAgent(Agent agent) {
         return candidatRepository.findByAgent(agent);
     }
+
     public long countCandidatesByStatus(EStatus status) {
         return candidatRepository.countByStatus(status);
     }
+
     public List<Candidat> getCandidatesByGroup(String group) {
         return candidatRepository.findByGroupe(group);
     }
+
     public List<Candidat> getActiveCandidates() {
         EStatus activeStatus = EStatus.ACTIF;
         return candidatRepository.findCandidatsByStatus(activeStatus);
@@ -175,17 +185,95 @@ public class CandidatService {
         return candidatRepository.findCandidatsByStatus(inactiveStatus);
     }
 
-    public void activateCandidat (Long id) throws NotFoundException {
+    public void activateCandidat(Long id) throws NotFoundException {
         Candidat candidat = getCandidatById(id);
         candidat.setStatus(EStatus.ACTIF);
         candidatRepository.save(candidat);
     }
 
-    public void desactivateCandidat (Long id) throws NotFoundException {
+    public void desactivateCandidat(Long id) throws NotFoundException {
         Candidat candidat = getCandidatById(id);
         candidat.setStatus(EStatus.INACTIF);
         candidatRepository.save(candidat);
     }
+    public void activateCandidatTLS(Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setTlsRecu(Boolean.TRUE);
+        candidatRepository.save(candidat);
+    }
+
+    public void desactivateCandidatTLS(Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setTlsRecu(Boolean.FALSE);
+        candidat.setVisaRecu(Boolean.FALSE);
+
+        candidatRepository.save(candidat);
+    }
+    public void activateCandidatOFII(Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+       candidat.setOfiiRecu(Boolean.TRUE);
+        candidatRepository.save(candidat);
+    }
+
+    public void desactivateCandidatOFII(Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setOfiiRecu(Boolean.FALSE);
+        candidat.setVisaRecu(Boolean.FALSE);
+        candidatRepository.save(candidat);
+    }
+
+    public void activateCandidatVISA(Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setTlsRecu(Boolean.TRUE);
+        candidat.setOfiiRecu(Boolean.TRUE);
+        candidat.setVisaRecu(Boolean.TRUE);
+        candidatRepository.save(candidat);
+    }
+
+    public void desactivateCandidatVISA(Long id) throws NotFoundException {
+        Candidat candidat = getCandidatById(id);
+        candidat.setTlsRecu(Boolean.FALSE);
+        candidat.setOfiiRecu(Boolean.FALSE);
+        candidat.setVisaRecu(Boolean.FALSE);
+
+        candidatRepository.save(candidat);
+    }
 
 
-}
+
+
+    public Candidat updateColorForCandidat(Long candidatId, String colorKey) throws CandidatNotFoundException {
+        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
+        if (candidat == null) {
+            throw new CandidatNotFoundException("Candidat non trouvé pour l'ID : " + candidatId);
+        }
+
+        // Mettre à jour la couleur du candidat en fonction de la clé de couleur
+        String newColor = null;
+        switch (colorKey) {
+
+            case "visa":
+                candidat.setVisaColor(newColor);
+                break;
+            case "TLS":
+                candidat.setTLSColor(newColor);
+                break;
+            case "OFFI":
+                candidat.setOFFIColor(newColor);
+                // Ajoutez d'autres cas pour d'autres clés de couleur
+                break;
+            default:
+                // Gérer le cas où la clé de couleur n'est pas reconnue
+                throw new IllegalArgumentException("Clé de couleur non valide : " + colorKey);
+        }
+
+        candidatRepository.save(candidat);
+        return candidat;
+    }
+
+
+
+
+
+    }
+
