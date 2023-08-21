@@ -87,6 +87,14 @@ public class CandidatController {
     public Candidat removeFonctionToCandidat(@PathVariable Long candidat_id,@PathVariable Long fonction_id){
         return candidatService.removeFonctionToCandidat(candidat_id,fonction_id);
     }
+    @PutMapping("/{candidat_id}/subfonction/{subfonction_id}/add")
+    public Candidat assignSubfunctionToCandidat(@PathVariable Long candidat_id,@PathVariable Long subfonction_id){
+        return candidatService.assignSubfunctionToCandidat(candidat_id,subfonction_id);
+    }
+    @PutMapping("/{candidat_id}/subfonction/{subfonction_id}/remove")
+    public Candidat removeSubFonctionToCandidat(@PathVariable Long candidat_id,@PathVariable Long subfonction_id){
+        return candidatService.removeSubFonctionToCandidat(candidat_id,subfonction_id);
+    }
 
 
     //pour récupérer tous les candidats

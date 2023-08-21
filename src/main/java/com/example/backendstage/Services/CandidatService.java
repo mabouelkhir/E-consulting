@@ -24,6 +24,7 @@ public class CandidatService {
     private final CandidatRepository candidatRepository;
     private final UserRepository userRepository;
     private final FonctionRepository fonctionRepository;
+    private final SubFonctionRepository subFonctionRepository;
     private final Identity_pieceRepository identity_pieceRepository;
     private final Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository;
 
@@ -32,12 +33,13 @@ public class CandidatService {
                            FonctionRepository fonctionRepository,
                            Identity_pieceRepository identity_pieceRepository,
                            Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository,
-                           UserRepository userRepository) {
+                           UserRepository userRepository, SubFonctionRepository subFonctionRepository) {
         this.candidatRepository = candidatRepository;
         this.fonctionRepository = fonctionRepository;
         this.identity_pieceRepository = identity_pieceRepository;
         this.candidatIdentityPiecesRepository = candidatIdentityPiecesRepository;
         this.userRepository = userRepository;
+        this.subFonctionRepository = subFonctionRepository;
     }
 
     // Méthode pour enregistrer un nouveau candidat dans la base de données
@@ -63,7 +65,6 @@ public class CandidatService {
             return null;
         }
         // Update the properties of the existing candidat with the properties of the updatedCandidat
-        existingCandidat.setDate_naissance(updatedCandidat.getDate_naissance());
         existingCandidat.setSexe(updatedCandidat.getSexe());
         existingCandidat.setAdresse(updatedCandidat.getAdresse());
         existingCandidat.setNum_tel(updatedCandidat.getNum_tel());
@@ -87,6 +88,27 @@ public class CandidatService {
         userRepository.deleteById(userID);
     }
 
+    public Candidat assignSubfunctionToCandidat(Long candidatId, Long subfunctionId) {
+        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
+        SubFonction subfunction = subFonctionRepository.findById(subfunctionId).orElse(null);
+
+        if (candidat != null  && subfunction != null) {
+            Set<SubFonction> subfunctions = new HashSet<>();
+
+
+            if (subfunctions == null) {
+                subfunctions = new HashSet<>();
+            }
+
+
+            subfunctions.add(subfunction);
+            candidat.setSubfonctions(subfunctions);
+
+            candidatRepository.save(candidat);
+        }
+
+        return candidat;
+    }
     public Candidat assignFonctionToCandidat(Long candidatId, Long fonctionId) {
         Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
         Fonction fonction = fonctionRepository.findById(fonctionId).orElse(null);
@@ -116,6 +138,42 @@ public class CandidatService {
                 candidat.setFonctions(fonctionSet);
                 candidatRepository.save(candidat);
             }
+        }
+
+        return candidat;
+    }
+
+    public Candidat assignSubFonctionToCandidat(Long candidatId, Long subFonctionId) {
+        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
+        SubFonction subFonction = subFonctionRepository.findById(subFonctionId).orElse(null);
+
+        if (candidat != null && subFonction != null) {
+            Set<SubFonction> subFonctionSet = candidat.getSubfonctions();
+            if (subFonctionSet == null) {
+                subFonctionSet = new HashSet<>();
+            }
+
+            subFonctionSet.add(subFonction);
+            candidat.setSubfonctions(subFonctionSet);
+            candidatRepository.save(candidat);
+        }
+
+        return candidat;
+    }
+
+    public Candidat removeSubFonctionToCandidat(Long candidatId, Long subFonctionId) {
+        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
+        SubFonction subFonction = subFonctionRepository.findById(subFonctionId).orElse(null);
+
+        if (candidat != null && subFonction != null) {
+            Set<SubFonction> subFonctionSet = candidat.getSubfonctions();
+            if (subFonctionSet == null) {
+                subFonctionSet = new HashSet<>();
+            }
+
+            subFonctionSet.remove(subFonction);
+            candidat.setSubfonctions(subFonctionSet);
+            candidatRepository.save(candidat);
         }
 
         return candidat;

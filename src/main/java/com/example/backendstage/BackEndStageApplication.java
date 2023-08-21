@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
-@CrossOrigin // Add this line to enable CORS for all endpoints
+@CrossOrigin(origins = "*")// Add this line to enable CORS for all endpoints
 
 public class BackEndStageApplication {
 
