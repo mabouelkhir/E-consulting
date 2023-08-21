@@ -111,6 +111,9 @@ public class UserController {
                 candidat.setEmail(signUpRequest.getEmail());
                 candidat.setCreatedAt(LocalDateTime.now());
                 candidat.setStatus(EStatus.INACTIF);
+                candidat.setOFFIReçu(false);
+                candidat.setTLSReçu(false);
+                candidat.setVisaReçu(false);
                 candidatRepository.save(candidat);
                 candidatId = candidat.getId();
 

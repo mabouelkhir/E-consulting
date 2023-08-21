@@ -78,24 +78,52 @@ public class Candidat {
     @JsonManagedReference
     private List<Reglement> reglements;
 
+
+
     @Column
     private String situation_fam;
+<<<<<<< HEAD
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "candidat_subfunctions",
             joinColumns = @JoinColumn(name = "candidat_id"),
             inverseJoinColumns = @JoinColumn(name = "subfunction_id"))
     private Set<SubFonction> subfonctions = new HashSet<>();
+=======
+    @Column
+    private String Ref_contrat;
+
+>>>>>>> 98cc3019a18c504e7b735ba59b3259015c4d3d4b
     @Column
     private int children;
+    @Column
+    private boolean visaRecu;
+    @Column
+    private boolean tlsRecu;
+    @Column
+    private boolean ofiiRecu;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
 
 
+    public void setVisaColor(String newColor) {
+    }
 
+    public void setTLSColor(String newColor) {
+    }
 
+    public void setOFFIColor(String newColor) {
+    }
 
+    public void setOFFIReçu(Boolean newOFFIState) {
+    }
 
+    public void setTLSReçu(Boolean newTLSState) {
+    }
+
+    public void setVisaReçu(Boolean newVisaState) {
+    }
 }

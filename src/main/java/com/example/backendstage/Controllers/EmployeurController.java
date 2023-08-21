@@ -1,22 +1,28 @@
 package com.example.backendstage.Controllers;
 
-import com.example.backendstage.Models.Agent;
 import com.example.backendstage.Models.Employeur;
+import com.example.backendstage.Repositories.EmployeurRepository;
+import com.example.backendstage.Requests.EmployeurRequest;
 import com.example.backendstage.Services.EmployeurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/employeur")
 public class EmployeurController {
     private final EmployeurService employeurService;
+    private final EmployeurRepository employeurRepository;
+
     @Autowired
 
-    public EmployeurController(EmployeurService employeurService) {
+    public EmployeurController(EmployeurService employeurService, EmployeurRepository employeurRepository) {
         this.employeurService = employeurService;
+        this.employeurRepository = employeurRepository;
     }
 
 
@@ -24,6 +30,14 @@ public class EmployeurController {
     @PostMapping("/Save")
     public Employeur saveEmployeur(@RequestBody Employeur employeur) {
         return employeurService.saveEmployeur(employeur);
+    }
+    @PutMapping("/{id}/Update")
+    public Employeur updateEmployeur(@PathVariable Long id, @RequestBody EmployeurRequest employeur){
+        return  employeurService.updateEmployeur(id,employeur);}
+    @GetMapping("/{id}")
+    public Optional<Employeur> getEmployeur(@PathVariable Long id) {
+        Optional<Employeur> employeur= employeurRepository.findById(id);
+        return employeur;
     }
 
     //pour récupérer tous les Employeurs
