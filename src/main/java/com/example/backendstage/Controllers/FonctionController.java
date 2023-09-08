@@ -38,7 +38,7 @@ public class FonctionController {
     }
 
 
-    //pour récupérer tous les fonction
+
     @GetMapping("/All")
     public List<Fonction> getAllFonctions() {
         List<Fonction> fonctions = fonctionService.getAllFonctions();

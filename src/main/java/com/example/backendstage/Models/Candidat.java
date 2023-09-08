@@ -2,6 +2,7 @@ package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Candidat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +62,7 @@ public class Candidat {
     private List<Candidat_IdentityPieces> candidatIdentityPieces;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
     @JsonManagedReference
-    private List<Entretien> entretiens;
+    private List<Rendez_vous> rendez_vous;
 
     @Column
     private String tl;
@@ -77,7 +79,7 @@ public class Candidat {
     @Column(length = 500000)
     private byte[] cv;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Reglement> reglements;
 
 
@@ -106,6 +108,7 @@ public class Candidat {
     @JsonBackReference
     @JoinColumn(name = "employeur_id")
     private Employeur employeur;
+
 
 
     public void setVisaColor(String newColor) {

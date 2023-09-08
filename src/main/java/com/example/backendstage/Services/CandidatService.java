@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -30,23 +29,21 @@ public class CandidatService {
     private final Identity_pieceRepository identity_pieceRepository;
     private final Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository;
     private final AgentRepository agentRepository;
-    private final EmployeurRepository employeurRepository;
+    private  final EmployeurRepository employeurRepository;
 
     @Autowired
-    public CandidatService(CandidatRepository candidatRepository,
-                           FonctionRepository fonctionRepository,
-                           Identity_pieceRepository identity_pieceRepository,
-                           Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository,
-                           UserRepository userRepository, SubFonctionRepository subFonctionRepository, AgentRepository agentRepository, EmployeurRepository employeurRepository) {
+    public CandidatService(CandidatRepository candidatRepository, UserRepository userRepository, FonctionRepository fonctionRepository, SubFonctionRepository subFonctionRepository, Identity_pieceRepository identityPieceRepository, Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository, AgentRepository agentRepository, EmployeurRepository employeurRepository) {
         this.candidatRepository = candidatRepository;
-        this.fonctionRepository = fonctionRepository;
-        this.identity_pieceRepository = identity_pieceRepository;
-        this.candidatIdentityPiecesRepository = candidatIdentityPiecesRepository;
         this.userRepository = userRepository;
+        this.fonctionRepository = fonctionRepository;
         this.subFonctionRepository = subFonctionRepository;
+        identity_pieceRepository = identityPieceRepository;
+        this.candidatIdentityPiecesRepository = candidatIdentityPiecesRepository;
         this.agentRepository = agentRepository;
         this.employeurRepository = employeurRepository;
     }
+
+
 
     // Méthode pour enregistrer un nouveau candidat dans la base de données
     public Candidat saveCandidat(Candidat candidat) {
@@ -222,9 +219,7 @@ public class CandidatService {
         return candidatRepository.findByFonctions(function);
     }
 
-    public List<Candidat> getCandidatesByEmployeur(Employeur employeur) {
-        return candidatRepository.findByEmployeur(employeur);
-    }
+    
 
     public List<Candidat> getCandidatesByAgent(Agent agent) {
         return candidatRepository.findByAgent(agent);
@@ -315,41 +310,15 @@ public class CandidatService {
         return candidatRepository.save(candidat);
     }
 
+    public List<Candidat> getCandidatesByEmployeurId(Long employeurID) {
+        return candidatRepository.findByEmployeurId(employeurID);
 
+    }
 
-
-    public Candidat updateColorForCandidat(Long candidatId, String colorKey) throws CandidatNotFoundException {
-        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
-        if (candidat == null) {
-            throw new CandidatNotFoundException("Candidat non trouvé pour l'ID : " + candidatId);
-        }
-
-        // Mettre à jour la couleur du candidat en fonction de la clé de couleur
-        String newColor = null;
-        switch (colorKey) {
-
-            case "visa":
-                candidat.setVisaColor(newColor);
-                break;
-            case "TLS":
-                candidat.setTLSColor(newColor);
-                break;
-            case "OFFI":
-                candidat.setOFFIColor(newColor);
-                // Ajoutez d'autres cas pour d'autres clés de couleur
-                break;
-            default:
-                // Gérer le cas où la clé de couleur n'est pas reconnue
-                throw new IllegalArgumentException("Clé de couleur non valide : " + colorKey);
-        }
-
-        candidatRepository.save(candidat);
-        return candidat;
+    public List<Candidat> getCandidatsByEmployeurCode(String employeurCode) {
+        return candidatRepository.findByEmployeurCodeEmp(employeurCode);
     }
 
 
-
-
-
-    }
+}
 

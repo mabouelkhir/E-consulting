@@ -103,6 +103,7 @@ public class UserController {
                 agent.setCreatedAt(LocalDateTime.now());
                 agentRepository.save(agent);
             }
+
         else if (roleName.equals("Employeur")) {
 
             if (employeurRepository.findByEmail(signUpRequest.getEmail()) == null) {
@@ -114,7 +115,8 @@ public class UserController {
                 employeurRepository.save(employeur);
             }
 
-        } else if (roleName.equals("Candidat")) {
+        }
+        }else if (roleName.equals("Candidat")) {
 
                 if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
                     Candidat candidat = new Candidat();
@@ -129,14 +131,10 @@ public class UserController {
                     candidatRepository.save(candidat);
                     candidatId = candidat.getId();
 
+                }else {
+                    throw new RuntimeException("Error: Invalid role specified.");
                 }
             }
-
-
-        } else {
-            throw new RuntimeException("Error: Invalid role specified.");
-        }
-
         userRepository.save(user);
         //notificationService.createUserNotification(user);
         if (candidatId != null) {

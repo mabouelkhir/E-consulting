@@ -1,5 +1,6 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -32,8 +33,10 @@ public class Employeur {
     private String adresse;
     @Column
     private String email;
+    @Column(name = "code_emp")
+    private String codeEmp;
     @Column
-    private String code_emp;
+    private String ref_contrat;
     @Column
     private Date createdAt;
 
@@ -41,10 +44,25 @@ public class Employeur {
     @JsonManagedReference
     private List<Candidat> candidatList;
 
+    @OneToMany
+    @JoinColumn(name = "prestation_id")
+    private List<Prestation> prestation;
     @Column
     private String city;
+
+    @Column
+    private String country;
+
     @Column(length = 500000)
     @Lob
     private byte[] image;
 
+
+    public void setPrestations(Prestation prestation) {
+    }
+
+    public List<Prestation> getPrestations() {
+
+        return prestation;
+    }
 }

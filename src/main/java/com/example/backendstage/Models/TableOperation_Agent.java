@@ -4,39 +4,34 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
-import java.util.Date;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "reglements")
+@Table(name = "tableoperation_agent")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
+public class TableOperation_Agent {
 
-
-public class Reglement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    private Date date_reglement;
+    @Column
+    private String montant;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "operation_agent_id")
+    private Operation_Agent operation_agent;
+
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "candidat_id")
     private Candidat candidat;
 
-    private String type_reglement;
-
-    private String montant;
-    private String ref_contrat;
-
-
-
 }
+

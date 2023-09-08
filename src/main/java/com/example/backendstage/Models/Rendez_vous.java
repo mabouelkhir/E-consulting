@@ -8,13 +8,13 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "entretiens")
+@Table(name = "rendez_vous")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public class Entretien {
+public class Rendez_vous {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

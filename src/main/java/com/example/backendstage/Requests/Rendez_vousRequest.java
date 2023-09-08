@@ -1,6 +1,5 @@
 package com.example.backendstage.Requests;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntretienRequest {
+public class Rendez_vousRequest {
     private String titre;
 
     private String description;
