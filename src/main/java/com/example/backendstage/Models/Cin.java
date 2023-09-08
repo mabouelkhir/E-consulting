@@ -1,11 +1,13 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -26,7 +28,11 @@ public class Cin {
 
     @Column
     private Date date_naissance;
+    @Column
+    private Date date_validite;
 
+
+    @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Candidat candidat;
 }

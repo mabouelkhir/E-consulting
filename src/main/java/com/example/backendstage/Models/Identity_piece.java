@@ -21,7 +21,7 @@ public class Identity_piece {
     private Long id;
 
     private String name;
+    @JsonIgnore
     @OneToMany(mappedBy = "identityPiece")
-    @JsonManagedReference
     private List<Candidat_IdentityPieces> candidatIdentityPieces;
 }

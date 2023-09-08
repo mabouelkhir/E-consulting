@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity
@@ -28,7 +29,7 @@ public class Reglement {
     private Candidat candidat;
     private String type_reglement;
 
-    private LocalDateTime date_reglement;
+    private Date date_reglement;
 
     private String montant;
 

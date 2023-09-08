@@ -42,6 +42,10 @@ public class DossierController {
     public List<DossierPieces> ajouterPiecesAuDossier(@PathVariable Long dossierId) {
         return dossierService.ajouterPiecesAuDossier(dossierId);
     }
+    @PutMapping("/{dossierId}/update")
+    public Dossier updateDossier(@PathVariable Long dossierId,@RequestBody DossierRequest dossierRequest){
+    return dossierService.updateDossier(dossierId,dossierRequest);
+    }
     @PutMapping("/{dossierId}/dossier/{pieceId}/update")
     public ResponseEntity<?> updateDossierPiece(@PathVariable Long dossierId, @PathVariable Long pieceId, @RequestBody DossierPieceRequest dossierPieceRequest) {
         try {
@@ -60,8 +64,13 @@ public class DossierController {
             return dossiers;
         }
 
+        @GetMapping("/{dossierID}")
+        public Dossier getDossierById(@PathVariable Long dossierID){
+    return dossierService.getDossierById(dossierID);
+        }
+
         //pour supprimer un Dossier par son ID
-        @DeleteMapping("/{id}")
+        @DeleteMapping("/{id}/delete")
         public void  deleteDossierById(@PathVariable Long id) {
             dossierService.deleteDossierById(id);
         }

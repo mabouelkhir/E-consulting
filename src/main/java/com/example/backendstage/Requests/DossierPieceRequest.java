@@ -11,4 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DossierPieceRequest {
     private String note;
+    private boolean delivered;
+
 }

@@ -24,9 +24,6 @@ public class Fonction {
 
     @Column
     private String nom_fonction;
-@JsonBackReference
-@OneToMany(mappedBy = "fonction", cascade = CascadeType.ALL)
-    private Set<SubFonction> subFonctions = new HashSet<>();
 
 
     @JsonIgnore

@@ -23,6 +23,7 @@ public class CandidatRequest {
     private String tl;
     private String Ref_contrat;
     private String id_Employeur;
+    private String groupe;
 
     private boolean visaRecu;
    private boolean tlsRecu;

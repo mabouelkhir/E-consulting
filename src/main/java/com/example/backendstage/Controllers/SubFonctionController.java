@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/subfonctions")
 public class SubFonctionController {
@@ -39,9 +39,9 @@ public class SubFonctionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SubFonction>> getAllSubFonctions() {
-        List<SubFonction> subFonctions = subFonctionService.getAllSubFonctions();
-        return ResponseEntity.ok(subFonctions);
+    public List<SubFonction> getAllSubFonctionsWithFunctions() {
+        return subFonctionService.getAllSubFonctionsWithFunctions();
+
     }
 
     @GetMapping("/{subFonctionId}")
@@ -50,5 +50,4 @@ public class SubFonctionController {
         return ResponseEntity.ok(subFonction);
     }
 
-    // ... other methods ...
 }

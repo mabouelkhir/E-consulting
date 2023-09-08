@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +61,7 @@ public class UserController {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
         user.setRole(signUpRequest.getRole());
-        user.setCreatedAt(LocalDateTime.now());
+        user.setCreatedAt(new Date());
         user.setAccountVerified(false);
 
         Role strRoles = signUpRequest.getRole();
@@ -88,7 +89,7 @@ public class UserController {
                 operateur.setNom(signUpRequest.getLastName());
                 operateur.setPrenom(signUpRequest.getFirstName());
                 operateur.setEmail(signUpRequest.getEmail());
-                operateur.setCreatedAt(LocalDateTime.now());
+                operateur.setCreatedAt(new Date());
 
                 operateurRepository.save(operateur);
             }
@@ -102,22 +103,35 @@ public class UserController {
                 agent.setCreatedAt(LocalDateTime.now());
                 agentRepository.save(agent);
             }
+        else if (roleName.equals("Employeur")) {
+
+            if (employeurRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Employeur employeur = new Employeur();
+                employeur.setNom(signUpRequest.getLastName());
+                employeur.setPrenom(signUpRequest.getFirstName());
+                employeur.setEmail(signUpRequest.getEmail());
+                employeur.setCreatedAt(new Date());
+                employeurRepository.save(employeur);
+            }
+
         } else if (roleName.equals("Candidat")) {
 
-            if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
-                Candidat candidat = new Candidat();
-                candidat.setNom(signUpRequest.getLastName());
-                candidat.setPrenom(signUpRequest.getFirstName());
-                candidat.setEmail(signUpRequest.getEmail());
-                candidat.setCreatedAt(LocalDateTime.now());
-                candidat.setStatus(EStatus.INACTIF);
-                candidat.setOFFIReçu(false);
-                candidat.setTLSReçu(false);
-                candidat.setVisaReçu(false);
-                candidatRepository.save(candidat);
-                candidatId = candidat.getId();
+                if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                    Candidat candidat = new Candidat();
+                    candidat.setNom(signUpRequest.getLastName());
+                    candidat.setPrenom(signUpRequest.getFirstName());
+                    candidat.setEmail(signUpRequest.getEmail());
+                    candidat.setCreatedAt(new Date());
+                    candidat.setStatus(EStatus.INACTIF);
+                    candidat.setOFFIReçu(false);
+                    candidat.setTLSReçu(false);
+                    candidat.setVisaReçu(false);
+                    candidatRepository.save(candidat);
+                    candidatId = candidat.getId();
 
+                }
             }
+
 
         } else {
             throw new RuntimeException("Error: Invalid role specified.");

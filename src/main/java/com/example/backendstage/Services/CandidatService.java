@@ -14,10 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidatService {
@@ -28,19 +29,23 @@ public class CandidatService {
     private final SubFonctionRepository subFonctionRepository;
     private final Identity_pieceRepository identity_pieceRepository;
     private final Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository;
+    private final AgentRepository agentRepository;
+    private final EmployeurRepository employeurRepository;
 
     @Autowired
     public CandidatService(CandidatRepository candidatRepository,
                            FonctionRepository fonctionRepository,
                            Identity_pieceRepository identity_pieceRepository,
                            Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository,
-                           UserRepository userRepository, SubFonctionRepository subFonctionRepository) {
+                           UserRepository userRepository, SubFonctionRepository subFonctionRepository, AgentRepository agentRepository, EmployeurRepository employeurRepository) {
         this.candidatRepository = candidatRepository;
         this.fonctionRepository = fonctionRepository;
         this.identity_pieceRepository = identity_pieceRepository;
         this.candidatIdentityPiecesRepository = candidatIdentityPiecesRepository;
         this.userRepository = userRepository;
         this.subFonctionRepository = subFonctionRepository;
+        this.agentRepository = agentRepository;
+        this.employeurRepository = employeurRepository;
     }
 
     // Méthode pour enregistrer un nouveau candidat dans la base de données
@@ -75,6 +80,8 @@ public class CandidatService {
         existingCandidat.setStatus(updatedCandidat.getStatus());
         existingCandidat.setSituation_fam(updatedCandidat.getSituation_fam());
         existingCandidat.setChildren(updatedCandidat.getChildren());
+        existingCandidat.setGroupe(updatedCandidat.getGroupe());
+
 
         // Save the updated candidat to the database
         return candidatRepository.save(existingCandidat);
@@ -95,14 +102,11 @@ public class CandidatService {
         SubFonction subfunction = subFonctionRepository.findById(subfunctionId).orElse(null);
 
         if (candidat != null  && subfunction != null) {
-            Set<SubFonction> subfunctions = new HashSet<>();
-
+            Set<SubFonction> subfunctions = candidat.getSubfonctions();
 
             if (subfunctions == null) {
                 subfunctions = new HashSet<>();
             }
-
-
             subfunctions.add(subfunction);
             candidat.setSubfonctions(subfunctions);
 
@@ -145,25 +149,6 @@ public class CandidatService {
         return candidat;
     }
 
-<<<<<<< HEAD
-    public Candidat assignSubFonctionToCandidat(Long candidatId, Long subFonctionId) {
-        Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
-        SubFonction subFonction = subFonctionRepository.findById(subFonctionId).orElse(null);
-
-        if (candidat != null && subFonction != null) {
-            Set<SubFonction> subFonctionSet = candidat.getSubfonctions();
-            if (subFonctionSet == null) {
-                subFonctionSet = new HashSet<>();
-            }
-
-            subFonctionSet.add(subFonction);
-            candidat.setSubfonctions(subFonctionSet);
-            candidatRepository.save(candidat);
-        }
-
-        return candidat;
-    }
-
     public Candidat removeSubFonctionToCandidat(Long candidatId, Long subFonctionId) {
         Candidat candidat = candidatRepository.findById(candidatId).orElse(null);
         SubFonction subFonction = subFonctionRepository.findById(subFonctionId).orElse(null);
@@ -182,23 +167,39 @@ public class CandidatService {
         return candidat;
     }
 
-    public Candidat_IdentityPieces ajouterIdentityPiecesAuCandidat(Long candidat_id,Long piece_id, Candidat_IdentityPieceRequest candidatIdentityPieceRequest){
-=======
-    public Candidat_IdentityPieces ajouterIdentityPiecesAuCandidat(Long candidat_id, Long piece_id, Candidat_IdentityPieceRequest candidatIdentityPieceRequest) {
->>>>>>> 98cc3019a18c504e7b735ba59b3259015c4d3d4b
+    public List<Candidat_IdentityPieces> ajouterIdentityPiecesAuCandidat(Long candidat_id){
         Candidat candidat = candidatRepository.findById(candidat_id).orElseThrow(EntityNotFoundException::new);
-        Identity_piece piece = identity_pieceRepository.findById(piece_id).orElseThrow(EntityNotFoundException::new);
-        Candidat_IdentityPieces candidatIdentityPieces = new Candidat_IdentityPieces();
-        candidatIdentityPieces.setCandidat(candidat);
-        candidatIdentityPieces.setIdentityPiece(piece);
-        candidatIdentityPieces.setCode(candidatIdentityPieceRequest.getCode());
-        candidatIdentityPieces.setEtat(candidatIdentityPieceRequest.getEtat());
-        candidatIdentityPieces.setCreated_at(LocalDateTime.now());
-        candidatIdentityPieces.setDate_validite(candidatIdentityPieceRequest.getDate_validite());
+        List<Identity_piece> pieces = identity_pieceRepository.findAll();
 
-        candidatIdentityPiecesRepository.save(candidatIdentityPieces);
-        return candidatIdentityPieces;
+        List<Candidat_IdentityPieces> candidatIdentityPiecesList = pieces.stream().map(piece -> {
+            Candidat_IdentityPieces candidatIdentityPieces = new Candidat_IdentityPieces();
+                    candidatIdentityPieces.setCandidat(candidat);
+                    candidatIdentityPieces.setIdentityPiece(piece);
+                    candidatIdentityPieces.setEtat("aucun etat ");
+                    candidatIdentityPieces.setDelivery_date(null);
+                    candidatIdentityPieces.setDelivered(false);
+                    return candidatIdentityPieces;
+                }).collect(Collectors.toList());
 
+        candidatIdentityPiecesRepository.saveAll(candidatIdentityPiecesList);
+        return candidatIdentityPiecesList;
+    }
+    public Candidat_IdentityPieces updateCandidatIdPiece(Long candidatID, Long IdentityPieceId, Candidat_IdentityPieceRequest candidatIdentityPieces) {
+        Candidat candidat = candidatRepository.findById(candidatID).orElseThrow(EntityNotFoundException::new);
+        Identity_piece identity_piece = identity_pieceRepository.findById(IdentityPieceId).orElseThrow(EntityNotFoundException::new);
+        Candidat_IdentityPieces candidat_identityPieces = candidatIdentityPiecesRepository.findByCandidatAndIdentityPiece(candidat,identity_piece);
+        if (candidat_identityPieces == null) {
+            throw new EntityNotFoundException("DossierPiece entry not found for the given Dossier and Piece.");
+        }
+        boolean isDelivered = candidatIdentityPieces.isDelivered();
+        candidat_identityPieces.setDelivered(isDelivered);
+        candidat_identityPieces.setCode(candidatIdentityPieces.getCode());
+        candidat_identityPieces.setDelivery_date(isDelivered ? new Date() : null);
+        candidat_identityPieces.setDate_validite(candidatIdentityPieces.getDate_validite());
+        candidat_identityPieces.setEtat(candidatIdentityPieces.getEtat());
+
+        candidatIdentityPiecesRepository.save(candidat_identityPieces);
+        return candidat_identityPieces;
     }
 
     public void uploadCV(Long id, MultipartFile file) throws IOException {
@@ -299,6 +300,19 @@ public class CandidatService {
         candidat.setVisaRecu(Boolean.FALSE);
 
         candidatRepository.save(candidat);
+    }
+     public Candidat ajouterCandidatAuAgent(Long candidatID,Long agentID){
+        Candidat candidat = candidatRepository.findById(candidatID).get();
+        Agent agent = agentRepository.findById(agentID).get();
+        candidat.setAgent(agent);
+        return candidatRepository.save(candidat);
+     }
+
+    public Candidat ajouterCandidatAuEmployeur(Long candidatID,Long employerID){
+        Candidat candidat = candidatRepository.findById(candidatID).get();
+        Employeur employeur = employeurRepository.findById(employerID).get();
+        candidat.setEmployeur(employeur);
+        return candidatRepository.save(candidat);
     }
 
 

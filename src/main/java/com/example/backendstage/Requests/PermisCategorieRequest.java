@@ -1,20 +1,19 @@
 package com.example.backendstage.Requests;
 
-import jakarta.persistence.Column;
+import com.example.backendstage.Models.EPermis;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CinRequest {
-    private String code;
+public class PermisCategorieRequest {
 
-    private Date date_naissance;
-    private Date date_validite;
+    private EPermis categorie;
 
-
+    private Date date_delivrance;
 }

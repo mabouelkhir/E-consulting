@@ -1,12 +1,12 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -27,9 +27,10 @@ public class Dossier {
     private String numeroDossier;
 
     @Column
-    private LocalDateTime date_creation;
+    private Date date_creation;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "candidat_id") // Assuming candidat_id is the foreign key column in the Dossier table
     private Candidat candidat;
     @Column
     private String status;

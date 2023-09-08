@@ -9,9 +9,7 @@ import com.example.backendstage.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Service
@@ -29,14 +27,6 @@ public class SubFonctionService {
         if (exFonction != null) {
             SubFonction subFonction = new SubFonction();
             subFonction.setNomSubFonction(subFonctionRequest.getNomSubFonction());
-
-            Set<SubFonction> subFonctionSet = exFonction.getSubFonctions();
-            if (subFonctionSet == null) {
-                subFonctionSet = new HashSet<>();
-            }
-            subFonctionSet.add(subFonction);
-            exFonction.setSubFonctions(subFonctionSet);
-
             subFonction.setFonction(exFonction); // Associate subFonction with the parent Fonction
             subFonctionRepository.save(subFonction);
 
@@ -58,10 +48,9 @@ public class SubFonctionService {
         subFonctionRepository.deleteById(subFonctionId);
     }
 
-    public List<SubFonction> getAllSubFonctions() {
+    public List<SubFonction> getAllSubFonctionsWithFunctions() {
         return subFonctionRepository.findAll();
     }
-
     public SubFonction getSubFonctionById(Long subFonctionId) throws NotFoundException {
         return subFonctionRepository.findById(subFonctionId)
                 .orElseThrow(() -> new NotFoundException("SubFonction not found"));

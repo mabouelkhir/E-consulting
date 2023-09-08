@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -17,8 +18,10 @@ public class Candidat_IdentityPieces {
     private Long id;
     private String etat;
     private String code;
-    private LocalDateTime date_validite;
-    private LocalDateTime created_at;
+    private boolean delivered;
+
+    private Date date_validite;
+    private Date delivery_date;
 
 
     @ManyToOne
@@ -26,6 +29,5 @@ public class Candidat_IdentityPieces {
     private Candidat candidat;
 
     @ManyToOne
-    @JsonBackReference
     private Identity_piece identityPiece;
 }

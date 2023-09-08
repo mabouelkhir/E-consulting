@@ -36,8 +36,11 @@ public class CinService {
             System.out.println(candidat);
             cinCandidat.setCandidat(candidat);
             cinCandidat.setCode(cinRequest.getCode());
+            cinCandidat.setDate_validite(cinRequest.getDate_validite());
             cinCandidat.setDate_naissance(cinRequest.getDate_naissance());
             cinRepository.save(cinCandidat);
+            candidat.setCin(cinCandidat);
+            candidatRepository.save(candidat);
 
         } else {
             throw new RuntimeException("Candidat non trouvé avec l'ID : " + idCandidat);
@@ -63,6 +66,7 @@ public class CinService {
         // Update the properties of the existing dossier with the properties of the updatedDossier
         existingCin.setDate_naissance(updateCin.getDate_naissance());
         existingCin.setCode(updateCin.getCode());
+        existingCin.setDate_validite(updateCin.getDate_validite());
 
 
         // Save the updated dossier to the database

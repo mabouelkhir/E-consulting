@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "operateurs")
@@ -33,12 +34,12 @@ public class Operateur {
     @Column
     private String adresse;
     @Column
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @Column
     private EStatus status;
     @Column
-    private Timestamp date_naissance;
+    private Date date_naissance;
     @Column
     private  String cin;
     @Column(length = 500000)

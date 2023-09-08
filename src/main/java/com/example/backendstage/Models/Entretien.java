@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "entretiens")
@@ -26,7 +26,7 @@ public class Entretien {
     private String description;
 
     @Column
-    private LocalDateTime date_entretien;
+    private Date date_entretien;
 
     @Column
     private String status;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -35,7 +35,7 @@ public class Employeur {
     @Column
     private String code_emp;
     @Column
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "employeur")
     @JsonManagedReference

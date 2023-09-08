@@ -25,7 +25,6 @@ public class Piece {
     private String nom_piece;
     @JsonIgnore
     @OneToMany(mappedBy = "piece")
-    @JsonManagedReference
     private List<DossierPieces> dossierPieces;
 
 

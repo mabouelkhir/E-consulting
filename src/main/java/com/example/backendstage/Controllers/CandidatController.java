@@ -4,6 +4,7 @@ import com.example.backendstage.Models.*;
 import com.example.backendstage.Repositories.CandidatRepository;
 import com.example.backendstage.Requests.CandidatRequest;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
+import com.example.backendstage.Requests.DossierPieceRequest;
 import com.example.backendstage.Services.CandidatNotFoundException;
 import com.example.backendstage.Services.CandidatService;
 import com.example.backendstage.exception.NotFoundException;
@@ -42,11 +43,28 @@ public class CandidatController {
     public Candidat saveCandidat(@RequestBody Candidat candidat) {
         return candidatService.saveCandidat(candidat);
     }
-    @PostMapping("/{id_candidat}/identity_piece/{id_piece}")
-    public ResponseEntity<?> ajouterIdentityPiecesAuCandidat(@PathVariable Long id_candidat, @PathVariable Long id_piece, @RequestBody Candidat_IdentityPieceRequest candidatIdentityPieceRequest) {
+    @PostMapping("/{id_candidat}/identity_piece")
+    public ResponseEntity<?> ajouterIdentityPiecesAuCandidat(@PathVariable Long id_candidat) {
         try {
-            Candidat_IdentityPieces candidatIdentityPieces = candidatService.ajouterIdentityPiecesAuCandidat(id_candidat, id_piece, candidatIdentityPieceRequest);
+            List<Candidat_IdentityPieces> candidatIdentityPieces = candidatService.ajouterIdentityPiecesAuCandidat(id_candidat);
             return new ResponseEntity<>(candidatIdentityPieces, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+    @PutMapping("/{candidatID}/Agent/{agentID}")
+    public Candidat ajouterCandidatAuAgent(@PathVariable Long candidatID,@PathVariable Long agentID){
+        return candidatService.ajouterCandidatAuAgent(candidatID,agentID);
+    }
+    @PutMapping("/{candidatID}/Employeur/{employerID}")
+    public Candidat ajouterCandidatAuEmployeur(@PathVariable Long candidatID,@PathVariable Long employerID){
+        return candidatService.ajouterCandidatAuEmployeur(candidatID,employerID);
+    }
+    @PutMapping("/{candidatID}/identitpyPiece/{pieceId}/update")
+    public ResponseEntity<?> updateCandidatIdPiece(@PathVariable Long candidatID, @PathVariable Long pieceId, @RequestBody Candidat_IdentityPieceRequest candidatIdentityPieces) {
+        try {
+            Candidat_IdentityPieces candidat_identityPieces = candidatService.updateCandidatIdPiece(candidatID, pieceId,candidatIdentityPieces);
+            return new ResponseEntity<>(candidat_identityPieces, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -79,23 +97,6 @@ public class CandidatController {
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(cvData));
         return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
     }
-
-
-
-    @PutMapping("/candidat/{candidatId}/{colorKey}")
-    public ResponseEntity<?> updateColorForCandidat(@PathVariable Long candidatId, @PathVariable String colorKey) {
-        try {
-            Candidat candidat = candidatService.updateColorForCandidat(candidatId, colorKey);
-            return ResponseEntity.ok(candidat);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la mise à jour de la couleur : " + e.getMessage());
-        } catch (CandidatNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-
 
     @PutMapping("/{id}/Update")
     public Candidat updateCandidat(@PathVariable Long id,@RequestBody CandidatRequest candidat){return  candidatService.updateCandidat(id,candidat);}

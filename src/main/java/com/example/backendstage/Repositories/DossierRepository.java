@@ -11,9 +11,4 @@ import java.util.Optional;
 
 public interface DossierRepository extends JpaRepository<Dossier,Long> {
     Optional<Dossier> findByNumeroDossier(String numero);
-
-
-    List<Dossier> findByStatus(String status
-
-    );
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class EntretienRequest {
     private String description;
 
 
-    private LocalDateTime date_entretien;
+    private Date date_entretien;
 
 
     private String status;

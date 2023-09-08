@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,10 +22,9 @@ public class DossierPieces {
     private Dossier dossier;
 
     @ManyToOne
-    @JsonBackReference
     private Piece piece;
     private boolean delivered;
-    private LocalDate deliveryDate;
+    private Date deliveryDate;
     private String note;
 
 }

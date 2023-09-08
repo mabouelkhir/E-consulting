@@ -1,6 +1,5 @@
 package com.example.backendstage.Services;
 
-import com.example.backendstage.Models.Candidat;
 import com.example.backendstage.Models.Fonction;
 import com.example.backendstage.Models.SubFonction;
 import com.example.backendstage.Repositories.FonctionRepository;
@@ -56,44 +55,6 @@ public class FonctionService {
         // Save the updated fonction to the database
         return fonctionRepository.save(existingFonction);
     }
-
-    public Fonction addSubFonctionToFonction(Long fonctionId, Long subFonctionId) {
-        Fonction fonction = fonctionRepository.findById(fonctionId).orElse(null);
-        SubFonction subFonction = subFonctionRepository.findById(subFonctionId).orElse(null);
-
-        if (fonction != null && subFonction != null) {
-            Set<SubFonction> subFonctions = fonction.getSubFonctions();
-            if (subFonctions == null) {
-                subFonctions = new HashSet<>();
-            }
-
-            subFonctions.add(subFonction);
-            fonction.setSubFonctions(subFonctions);
-
-            fonctionRepository.save(fonction);
-        }
-
-        return fonction;
-    }
-    public Fonction removeSubFonctionToFonction(Long fonctionId, Long subFonctionId) {
-        Fonction fonction = fonctionRepository.findById(fonctionId).orElse(null);
-        SubFonction subFonction = subFonctionRepository.findById(subFonctionId).orElse(null);
-
-        if (fonction != null && subFonction != null) {
-            Set<SubFonction> subFonctions = fonction.getSubFonctions();
-            if (subFonctions == null) {
-                subFonctions = new HashSet<>();
-            }
-
-            subFonctions.remove(subFonction);
-            fonction.setSubFonctions(subFonctions);
-
-            fonctionRepository.save(fonction);
-        }
-
-        return fonction;
-    }
-
 
 
     // Méthode pour supprimer une fonction par son ID

@@ -36,19 +36,18 @@ public class FonctionController {
     public Fonction updateFonction(@PathVariable Long fonctionID,@RequestBody FonctionRequest fonctionRequest){
         return fonctionService.updateFonction(fonctionID,fonctionRequest);
     }
-    @PutMapping("/{fonctionId}/addSubFonction")
-    public ResponseEntity<Fonction> addSubFonctionToFonction(
-            @PathVariable Long fonctionId,
-            @RequestParam Long subFonctionId) {
-        Fonction updatedFonction = fonctionService.addSubFonctionToFonction(fonctionId, subFonctionId);
-        return ResponseEntity.ok(updatedFonction);
-    }
+
 
     //pour récupérer tous les fonction
     @GetMapping("/All")
     public List<Fonction> getAllFonctions() {
         List<Fonction> fonctions = fonctionService.getAllFonctions();
         return fonctions;
+    }
+    @GetMapping("/{id}")
+    public Fonction getAllFonctions(@PathVariable Long id) {
+        return fonctionService.getFonctionById(id);
+
     }
 
     //pour supprimer un agent par son ID

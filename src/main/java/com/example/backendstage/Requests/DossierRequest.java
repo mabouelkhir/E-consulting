@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class DossierRequest {
     private String numeroDossier;
 
-    private LocalDateTime date_creation;
     private String status;
     private String note;
 

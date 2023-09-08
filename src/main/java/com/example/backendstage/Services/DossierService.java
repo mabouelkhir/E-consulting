@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,14 +53,15 @@ public class DossierService {
             System.out.println(candidat);
             dossierCandidat.setCandidat(candidat);
             dossierCandidat.setNumeroDossier(dossierRequest.getNumeroDossier());
-            dossierCandidat.setDate_creation(dossierRequest.getDate_creation());
+            dossierCandidat.setDate_creation(new Date());
             dossierCandidat.setNote(dossierRequest.getNote());
             dossierCandidat.setStatus(dossierRequest.getStatus());
 
             dossierRepository.save(dossierCandidat);
 
         } else {
-            throw new RuntimeException("Patient non trouvé avec l'ID : " + idCandidat);
+            throw new RuntimeException("Candidat" +
+                    " non trouvé avec l'ID : " + idCandidat);
         }
         return dossierCandidat;
     }
@@ -72,7 +75,7 @@ public class DossierService {
         return dossierRepository.findAll();
     }
     // Méthode pour mettre à jour les informations d'un dossier
-    public Dossier updateDossier(Long id, Dossier updatedDossier) {
+    public Dossier updateDossier(Long id, DossierRequest updatedDossier) {
         // Check if the dossier with the given ID exists in the database
         Dossier existingDossier = dossierRepository.findById(id).orElse(null);
         if (existingDossier == null) {
@@ -80,8 +83,7 @@ public class DossierService {
             return null;
         }
         // Update the properties of the existing dossier with the properties of the updatedDossier
-        existingDossier.setDate_creation(updatedDossier.getDate_creation());
-        existingDossier.setCandidat(updatedDossier.getCandidat());
+        existingDossier.setNumeroDossier(updatedDossier.getNumeroDossier());
         existingDossier.setStatus(updatedDossier.getStatus());
         existingDossier.setNote(updatedDossier.getNote());
 
@@ -109,18 +111,13 @@ public class DossierService {
     public DossierPieces updateDossierPiece(Long dossierId, Long pieceId, DossierPieceRequest dossierPieceRequest) {
         Dossier dossier = dossierRepository.findById(dossierId).orElseThrow(EntityNotFoundException::new);
         Piece piece = pieceRepository.findById(pieceId).orElseThrow(EntityNotFoundException::new);
-
         DossierPieces dossierPiece = dossierPiecesRepository.findByDossierAndPiece(dossier, piece);
-
         if (dossierPiece == null) {
-            // Handle the case when the DossierPieces entry is not found for the given Dossier and Piece.
-            // You can throw an exception or handle it as per your requirement.
             throw new EntityNotFoundException("DossierPiece entry not found for the given Dossier and Piece.");
         }
-
-        // Set the fields you want to update
-        dossierPiece.setDelivered(true);
-        dossierPiece.setDeliveryDate(LocalDate.now());
+        boolean isDelivered = dossierPieceRequest.isDelivered();
+        dossierPiece.setDelivered(isDelivered);
+        dossierPiece.setDeliveryDate(isDelivered ? new Date() : null);
         dossierPiece.setNote(dossierPieceRequest.getNote());
 
         dossierPiecesRepository.save(dossierPiece);

@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class User {
 
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     private boolean accountVerified;
 

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -13,12 +12,9 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReglementRequest {
-    private String type_reglement;
 
-    private Date date_reglement;
+public class PermisRequest {
+    private String code;
 
-    private String montant;
-
-
+    private Date date_validite;
 }
