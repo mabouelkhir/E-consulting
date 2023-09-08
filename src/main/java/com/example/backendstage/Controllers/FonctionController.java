@@ -36,6 +36,13 @@ public class FonctionController {
     public Fonction updateFonction(@PathVariable Long fonctionID,@RequestBody FonctionRequest fonctionRequest){
         return fonctionService.updateFonction(fonctionID,fonctionRequest);
     }
+    @PutMapping("/{fonctionId}/addSubFonction")
+    public ResponseEntity<Fonction> addSubFonctionToFonction(
+            @PathVariable Long fonctionId,
+            @RequestParam Long subFonctionId) {
+        Fonction updatedFonction = fonctionService.addSubFonctionToFonction(fonctionId, subFonctionId);
+        return ResponseEntity.ok(updatedFonction);
+    }
 
 
     @GetMapping("/All")

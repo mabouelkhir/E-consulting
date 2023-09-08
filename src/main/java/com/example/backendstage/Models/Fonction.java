@@ -1,10 +1,14 @@
 package com.example.backendstage.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +24,11 @@ public class Fonction {
 
     @Column
     private String nom_fonction;
+@JsonBackReference
+@OneToMany(mappedBy = "fonction", cascade = CascadeType.ALL)
+    private Set<SubFonction> subFonctions = new HashSet<>();
+
+
     @JsonIgnore
     @ManyToMany(mappedBy = "fonctions" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Candidat> candidatSet ;

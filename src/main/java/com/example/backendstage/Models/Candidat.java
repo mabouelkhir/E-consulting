@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,8 +31,6 @@ public class Candidat {
     @Column
     private String prenom;
     @Column
-    private Date date_naissance;
-    @Column
     private String sexe;
     @Column
     private LocalDateTime createdAt;
@@ -51,6 +50,8 @@ public class Candidat {
             joinColumns ={ @JoinColumn(name = "candidat_id",referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "fonction_id",referencedColumnName = "id")})
     private Set<Fonction> fonctions ;
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private Cin cin;
 
     @Column
     private String obs;
@@ -83,9 +84,18 @@ public class Candidat {
 
     @Column
     private String situation_fam;
+<<<<<<< HEAD
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "candidat_subfunctions",
+            joinColumns = @JoinColumn(name = "candidat_id"),
+            inverseJoinColumns = @JoinColumn(name = "subfunction_id"))
+    private Set<SubFonction> subfonctions = new HashSet<>();
+=======
     @Column
     private String Ref_contrat;
 
+>>>>>>> 98cc3019a18c504e7b735ba59b3259015c4d3d4b
     @Column
     private int children;
     @Column
