@@ -102,7 +102,18 @@ public class UserController {
                 agent.setCreatedAt(LocalDateTime.now());
                 agentRepository.save(agent);
             }
-        } else if (roleName.equals("Candidat")) {
+        }
+        else if (roleName.equals("Employeur")) {
+
+            if (employeurRepository.findByEmail(signUpRequest.getEmail()) == null) {
+                Employeur employeur = new Employeur();
+                employeur.setNom(signUpRequest.getLastName());
+                employeur.setPrenom(signUpRequest.getFirstName());
+                employeur.setEmail(signUpRequest.getEmail());
+                employeur.setCreatedAt(LocalDateTime.now());
+                employeurRepository.save(employeur);
+            }
+        }else if (roleName.equals("Candidat")) {
 
             if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
                 Candidat candidat = new Candidat();

@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -27,18 +26,20 @@ public class CandidatService {
     private final FonctionRepository fonctionRepository;
     private final Identity_pieceRepository identity_pieceRepository;
     private final Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository;
+    private  final EmployeurRepository employeurRepository;
 
     @Autowired
     public CandidatService(CandidatRepository candidatRepository,
                            FonctionRepository fonctionRepository,
                            Identity_pieceRepository identity_pieceRepository,
                            Candidat_IdentityPiecesRepository candidatIdentityPiecesRepository,
-                           UserRepository userRepository) {
+                           UserRepository userRepository, EmployeurRepository employeurRepository) {
         this.candidatRepository = candidatRepository;
         this.fonctionRepository = fonctionRepository;
         this.identity_pieceRepository = identity_pieceRepository;
         this.candidatIdentityPiecesRepository = candidatIdentityPiecesRepository;
         this.userRepository = userRepository;
+        this.employeurRepository = employeurRepository;
     }
 
     // Méthode pour enregistrer un nouveau candidat dans la base de données
@@ -159,9 +160,7 @@ public class CandidatService {
         return candidatRepository.findByFonctions(function);
     }
 
-    public List<Candidat> getCandidatesByEmployeur(Employeur employeur) {
-        return candidatRepository.findByEmployeur(employeur);
-    }
+    
 
     public List<Candidat> getCandidatesByAgent(Agent agent) {
         return candidatRepository.findByAgent(agent);
@@ -271,9 +270,15 @@ public class CandidatService {
         return candidat;
     }
 
-
-
-
+    public List<Candidat> getCandidatesByEmployeurId(Long employeurID) {
+        return candidatRepository.findByEmployeurId(employeurID);
 
     }
+
+    public List<Candidat> getCandidatsByEmployeurCode(String employeurCode) {
+        return candidatRepository.findByEmployeurCodeEmp(employeurCode);
+    }
+
+
+}
 

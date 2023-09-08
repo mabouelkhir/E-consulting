@@ -6,4 +6,8 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 public class AgentRequest {
+    private String email;
+    private String adresse;
+    private String tel;
+
 }

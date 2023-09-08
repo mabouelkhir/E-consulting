@@ -2,6 +2,7 @@ package com.example.backendstage.Services;
 
 import com.example.backendstage.Models.Agent;
 import com.example.backendstage.Repositories.AgentRepository;
+import com.example.backendstage.Requests.AgentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ import java.util.List;
         }
 
     // Méthode pour mettre à jour les informations d'un agent
-    public Agent updateAgent(Long id, Agent updatedAgent) {
+    public Agent updateAgent(Long id, AgentRequest updatedAgent) {
         // Check if the agent with the given ID exists in the database
         Agent existingAgent = agentRepository.findById(id).orElse(null);
         if (existingAgent == null) {
@@ -43,9 +44,8 @@ import java.util.List;
         }
 
         // Update the properties of the existing agent with the properties of the updatedAgent
-        existingAgent.setNom(updatedAgent.getNom());
-        existingAgent.setPrenom(updatedAgent.getPrenom());
-        existingAgent.setSexe(updatedAgent.getSexe());
+
+
         existingAgent.setEmail(updatedAgent.getEmail());
         existingAgent.setTel(updatedAgent.getTel());
         existingAgent.setAdresse(updatedAgent.getAdresse());

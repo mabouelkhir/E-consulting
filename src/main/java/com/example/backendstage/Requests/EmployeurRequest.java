@@ -14,15 +14,17 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class EmployeurRequest {
-    private String nom;
-    private String prenom;
+
     private String num_tel;
 
     private String adresse;
 
     private String email;
 
-    private String code_emp;
+    private String codeEmp;
+
+    private String ref_contrat;
 
     private String city;
+    private String country;
 }

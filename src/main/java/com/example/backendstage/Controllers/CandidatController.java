@@ -2,10 +2,12 @@ package com.example.backendstage.Controllers;
 
 import com.example.backendstage.Models.*;
 import com.example.backendstage.Repositories.CandidatRepository;
+import com.example.backendstage.Repositories.EmployeurRepository;
 import com.example.backendstage.Requests.CandidatRequest;
 import com.example.backendstage.Requests.Candidat_IdentityPieceRequest;
 import com.example.backendstage.Services.CandidatNotFoundException;
 import com.example.backendstage.Services.CandidatService;
+import com.example.backendstage.Services.EmployeurService;
 import com.example.backendstage.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -19,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -29,12 +30,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class CandidatController {
     private final CandidatService candidatService;
     private final CandidatRepository candidatRepository;
+    private final EmployeurRepository employeurRepository;
+    private final EmployeurService employeurService;
 
     @Autowired
     public CandidatController(CandidatService candidatService,
-                              CandidatRepository candidatRepository) {
+                              CandidatRepository candidatRepository, EmployeurRepository employeurRepository, EmployeurService employeurService) {
         this.candidatService = candidatService;
         this.candidatRepository = candidatRepository;
+        this.employeurRepository = employeurRepository;
+        this.employeurService = employeurService;
     }
 
     //pour enregistrer un nouvel candidat
@@ -61,6 +66,26 @@ public class CandidatController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CV upload failed!");
         }
     }
+    @GetMapping("/employeur/{employeurID}")
+    public List<Candidat> getCandidatesByEmployeurId(@PathVariable Long employeurID){
+        return candidatService.getCandidatesByEmployeurId(employeurID);
+    }
+    @GetMapping("/candidat/employeur/{employeurCode}")
+    public ResponseEntity<List<Candidat>> getCandidatsByEmployeur(@PathVariable String employeurCode) {
+        try {
+            System.out.println("Code Employeur reçu : " + employeurCode);
+            List<Candidat> candidats = candidatService.getCandidatsByEmployeurCode(employeurCode);
+            return ResponseEntity.ok(candidats);
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la récupération des candidats : " + e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
+
+
+
 
     @GetMapping("/{id}/cv")
     public ResponseEntity<InputStreamResource> downloadCV(@PathVariable Long id) {
