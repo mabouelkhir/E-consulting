@@ -32,7 +32,6 @@ public class Rendez_vous {
     private String status;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "candidat_id")
     private Candidat candidat;
 }

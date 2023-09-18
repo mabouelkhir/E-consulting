@@ -39,6 +39,11 @@ public class PermisController {
     public List<Permis> getAllPermis(){
         return permisService.getAllPermis();
     }
+
+    @GetMapping("getByPermis/{candidatID}")
+    public List<PermisCategorie> getPermisByCandidatID(@PathVariable Long candidatID){
+        return permisService.getPermisByCandidatID(candidatID);
+    }
     @PutMapping("/updatePermis/{permisID}")
     public Permis updatePermis(@PathVariable Long permisID, @RequestBody PermisRequest permisRequest){
         return permisService.updatePermis(permisID, permisRequest);

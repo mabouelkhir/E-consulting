@@ -78,6 +78,8 @@ public class CandidatService {
         existingCandidat.setSituation_fam(updatedCandidat.getSituation_fam());
         existingCandidat.setChildren(updatedCandidat.getChildren());
         existingCandidat.setGroupe(updatedCandidat.getGroupe());
+        existingCandidat.setRef_contrat(updatedCandidat.getRef_contrat());
+
 
 
         // Save the updated candidat to the database

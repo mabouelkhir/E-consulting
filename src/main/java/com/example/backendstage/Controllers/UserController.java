@@ -4,13 +4,19 @@ import com.example.backendstage.Models.*;
 
 
 import com.example.backendstage.Repositories.*;
+import com.example.backendstage.Requests.LoginRequest;
+import com.example.backendstage.Requests.LoginResponse;
 import com.example.backendstage.Requests.RegisterRequest;
 import com.example.backendstage.Services.UserService;
 import com.example.backendstage.exception.NotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -27,6 +33,9 @@ public class UserController {
     private final UserService userService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     RoleRepository roleRepository;
     @Autowired
@@ -59,7 +68,10 @@ public class UserController {
         user.setFirstName(signUpRequest.getFirstName());
         user.setLastName(signUpRequest.getLastName());
         user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
+        // Hash the password
+        String hashedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+
+        user.setPassword(hashedPassword);
         user.setRole(signUpRequest.getRole());
         user.setCreatedAt(new Date());
         user.setAccountVerified(false);
@@ -79,7 +91,7 @@ public class UserController {
                 admin.setNom(signUpRequest.getLastName());
                 admin.setPrenom(signUpRequest.getFirstName());
                 admin.setEmail(signUpRequest.getEmail());
-                admin.setCreatedAt(LocalDateTime.now());
+                admin.setCreatedAt(new Date());
                 adminRepository.save(admin);
             }
         } else if (roleName.equals("Operateur")) {
@@ -103,7 +115,7 @@ public class UserController {
                 agent.setCreatedAt(LocalDateTime.now());
                 agentRepository.save(agent);
             }
-
+        }
         else if (roleName.equals("Employeur")) {
 
             if (employeurRepository.findByEmail(signUpRequest.getEmail()) == null) {
@@ -114,9 +126,8 @@ public class UserController {
                 employeur.setCreatedAt(new Date());
                 employeurRepository.save(employeur);
             }
-
         }
-        }else if (roleName.equals("Candidat")) {
+        else if (roleName.equals("Candidat")) {
 
                 if (candidatRepository.findByEmail(signUpRequest.getEmail()) == null) {
                     Candidat candidat = new Candidat();
@@ -138,7 +149,7 @@ public class UserController {
         userRepository.save(user);
         //notificationService.createUserNotification(user);
         if (candidatId != null) {
-            return ResponseEntity.ok("User registered successfully! Candidat ID: " + candidatId);
+            return ResponseEntity.ok("User registered successfully! Candidat ID: " + hashedPassword);
         } else {
             // Continue with your existing code after registration
             // ...
@@ -146,6 +157,55 @@ public class UserController {
             return ResponseEntity.ok("User registered successfully!");
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+
+        if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            // User not found or incorrect password
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid email or password");
+        }
+
+        if (!user.isAccountVerified()) {
+            // Account is not activated
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Account is not activated. Please contact an admin.");
+        }
+
+        // Here, you can return the user object based on their role
+        String roleName = String.valueOf(user.getRole().getName());
+        Object userObject = null;
+
+        switch (roleName) {
+            case "Admin":
+                userObject = adminRepository.findByEmail(loginRequest.getEmail());
+                break;
+            case "Operateur":
+                userObject = operateurRepository.findByEmail(loginRequest.getEmail());
+                break;
+            case "Agent":
+                userObject = agentRepository.findByEmail(loginRequest.getEmail());
+                break;
+            case "Employeur":
+                userObject = employeurRepository.findByEmail(loginRequest.getEmail());
+                break;
+            case "Candidat":
+                userObject = candidatRepository.findByEmail(loginRequest.getEmail());
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Invalid role");
+        }
+
+        // Create a LoginResponse object with role and user
+        LoginResponse loginResponse = new LoginResponse(roleName, userObject);
+
+        return ResponseEntity.ok(loginResponse);
+    }
+
+
 
     //pour récupérer tous les users
     @GetMapping("/All")
