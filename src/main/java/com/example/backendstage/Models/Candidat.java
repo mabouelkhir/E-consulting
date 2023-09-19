@@ -60,9 +60,7 @@ public class Candidat {
     @OneToMany(mappedBy = "candidat")
     @JsonManagedReference
     private List<Candidat_IdentityPieces> candidatIdentityPieces;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "candidat")
-    @JsonManagedReference
-    private List<Rendez_vous> rendez_vous;
+
 
     @Column
     private String tl;

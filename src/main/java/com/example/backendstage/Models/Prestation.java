@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "rendez_vous")
+@Table(name = "prestation")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,7 +33,7 @@ public class Prestation {
     private String etat_financier;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prestation_id")
+    @JoinColumn(name = "employeur_id")
     private Employeur Employeur;
 
 }
