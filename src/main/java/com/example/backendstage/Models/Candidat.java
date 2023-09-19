@@ -80,8 +80,6 @@ public class Candidat {
     @JsonBackReference
     private List<Reglement> reglements;
 
-
-
     @Column
     private String situation_fam;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

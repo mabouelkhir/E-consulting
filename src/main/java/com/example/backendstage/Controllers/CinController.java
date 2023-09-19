@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/cins")
+@RequestMapping("/api/cins")
 public class CinController {
 
     private final CinService cinService;

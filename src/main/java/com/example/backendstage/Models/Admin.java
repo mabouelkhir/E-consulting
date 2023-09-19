@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "admins")
@@ -30,7 +31,7 @@ public class Admin {
     @Column
     private String adresse;
     @Column
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @Column(length = 500000)
     @Lob

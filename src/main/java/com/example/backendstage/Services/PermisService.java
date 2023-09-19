@@ -65,6 +65,14 @@ public class PermisService {
     public Permis getPermisById(Long permisID) {
         return permisRepository.findById(permisID).orElse(null); // Returns null if Permis is not found.
     }
+
+    public List<PermisCategorie> getPermisByCandidatID(Long candidatID) {
+    Candidat candidat = candidatRepository.findById(candidatID).get();
+    Permis permis = permisRepository.getPermisByCandidat(candidat);
+
+    List<PermisCategorie> permisCategorie = permisCategoriyRepository.getAllByPermis(permis);
+    return permisCategorie;
+    }
     public PermisCategorie getPermisCategorieById(Long permisCategorieID) {
         return permisCategoriyRepository.findById(permisCategorieID).orElse(null); // Returns null if PermisCategorie is not found.
     }

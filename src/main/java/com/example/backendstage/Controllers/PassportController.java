@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/passports")
+@RequestMapping("/api/passports")
 public class PassportController {
     private final PassportService passportService;
 
