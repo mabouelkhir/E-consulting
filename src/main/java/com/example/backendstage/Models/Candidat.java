@@ -100,10 +100,12 @@ public class Candidat {
     @Column
     private boolean ofiiRecu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "employeur_id")
-    private Employeur employeur;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "candidat_employeur",
+            joinColumns ={ @JoinColumn(name = "candidat_id",referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "employeur_id",referencedColumnName = "id")})
+    private Set<Employeur> employeurs;
 
 
 

@@ -59,17 +59,7 @@ public class EmployeurService {
     public Employeur saveEmployeur(Employeur employeur) {
         return employeurRepository.save(employeur);
     }
-    public void assignCandidatToEmployeur(Long candidatId1, Long employeurId) {
-        Candidat candidat = candidatRepository.findById(candidatId1).orElse(null);
-        Employeur employeur = employeurRepository.findById(employeurId).orElse(null);
 
-        if (candidat != null && employeur != null) {
-            candidat.setEmployeur(employeur);
-            employeur.getCandidatList().add(candidat);
-            candidatRepository.save(candidat);
-            employeurRepository.save(employeur);
-        }
-    }
 
 
 

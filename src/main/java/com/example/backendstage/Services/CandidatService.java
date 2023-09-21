@@ -55,10 +55,16 @@ public class CandidatService {
         return candidatRepository.findById(id).orElse(null);
     }
 
+
     // Méthode pour récupérer tous les candidats de la base de données
     public List<Candidat> getAllCandidats() {
         return candidatRepository.findAll();
     }
+    public List<Candidat> getAllCandidatsByEmplyeur(Long employeurID) {
+        Employeur employeur = employeurRepository.findById(employeurID).get();
+        return candidatRepository.findByEmployeur(employeur);
+    }
+
 
     // Méthode pour mettre à jour les informations d'un candidat
     public Candidat updateCandidat(Long id, CandidatRequest updatedCandidat) {
@@ -306,20 +312,26 @@ public class CandidatService {
      }
 
     public Candidat ajouterCandidatAuEmployeur(Long candidatID,Long employerID){
-        Candidat candidat = candidatRepository.findById(candidatID).get();
-        Employeur employeur = employeurRepository.findById(employerID).get();
-        candidat.setEmployeur(employeur);
-        return candidatRepository.save(candidat);
+        Candidat candidat = candidatRepository.findById(candidatID).orElse(null);
+        Employeur employeur = employeurRepository.findById(employerID).orElse(null);
+
+        if (candidat != null && employeur != null) {
+            Set<Employeur> employeurSet = candidat.getEmployeurs();
+            if (employeurSet == null) {
+                employeurSet = new HashSet<>();
+            }
+
+            employeurSet.add(employeur);
+            candidat.setEmployeurs(employeurSet);
+            candidatRepository.save(candidat);
+        }
+
+        return candidat;
     }
 
-    public List<Candidat> getCandidatesByEmployeurId(Long employeurID) {
-        return candidatRepository.findByEmployeurId(employeurID);
 
-    }
 
-    public List<Candidat> getCandidatsByEmployeurCode(String employeurCode) {
-        return candidatRepository.findByEmployeurCodeEmp(employeurCode);
-    }
+
 
 
 }

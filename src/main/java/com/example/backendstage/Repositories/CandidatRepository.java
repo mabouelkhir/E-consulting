@@ -17,6 +17,7 @@ public interface CandidatRepository extends JpaRepository<Candidat,Long> {
     List<Candidat> findByFonctions(Fonction function);
     Optional<Candidat> findById(Long candidatId);
 
+    @Query("SELECT c FROM Candidat c JOIN c.employeurs e WHERE e = :employeur")
     List<Candidat> findByEmployeur(Employeur employeur);
 
     List<Candidat> findByAgent(Agent agent);
@@ -25,11 +26,8 @@ public interface CandidatRepository extends JpaRepository<Candidat,Long> {
     List<Candidat> findByGroupe(String group);
 
 
-    List<Candidat> findByEmployeurId(Long employeurID);
 
 
-    @Query("SELECT c FROM Candidat c JOIN c.employeur e WHERE e.codeEmp = :codeEmp")
-    List<Candidat> findByEmployeurCodeEmp(String codeEmp);
 
 
 

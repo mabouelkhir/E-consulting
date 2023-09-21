@@ -84,21 +84,8 @@ public class CandidatController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("CV upload failed!");
         }
     }
-    @GetMapping("/employeur/{employeurID}")
-    public List<Candidat> getCandidatesByEmployeurId(@PathVariable Long employeurID){
-        return candidatService.getCandidatesByEmployeurId(employeurID);
-    }
-    @GetMapping("/candidat/employeur/{employeurCode}")
-    public ResponseEntity<List<Candidat>> getCandidatsByEmployeur(@PathVariable String employeurCode) {
-        try {
-            System.out.println("Code Employeur reçu : " + employeurCode);
-            List<Candidat> candidats = candidatService.getCandidatsByEmployeurCode(employeurCode);
-            return ResponseEntity.ok(candidats);
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la récupération des candidats : " + e.getMessage());
-            return ResponseEntity.status(500).build();
-        }
-    }
+
+
 
 
 
@@ -148,6 +135,11 @@ public class CandidatController {
     @GetMapping("/All")
     public List<Candidat> getAllcandidats() {
         List<Candidat> candidats= candidatService.getAllCandidats();
+        return candidats;
+    }
+    @GetMapping("/All/{employeurID}")
+    public List<Candidat> getAllCandidatsByEmplyeur(@PathVariable Long employeurID) {
+        List<Candidat> candidats= candidatService.getAllCandidatsByEmplyeur(employeurID);
         return candidats;
     }
     @GetMapping("/{id}")

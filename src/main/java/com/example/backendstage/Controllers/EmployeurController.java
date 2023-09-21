@@ -33,10 +33,7 @@ public class EmployeurController {
     public Employeur updateEmployeur(@PathVariable Long id, @RequestBody EmployeurRequest employeur){
         return  employeurService.updateEmployeur(id,employeur);}
 
-    @PostMapping("/{candidatID}/assignCandidatToEmployer/{employerID}")
-    public void assignCandidatToEmployer(@PathVariable Long candidatID,@PathVariable Long employerID){
-        employeurService.assignCandidatToEmployeur(candidatID,employerID);
-    }
+
 
     @GetMapping("/{id}")
     public Optional<Employeur> getEmployeur(@PathVariable Long id) {

@@ -56,7 +56,7 @@ public class PrestationController {
         prestationService.deletePrestationById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PutMapping("/{employeurID}/assignEmployeurToPrestation/{prestationID}")
+    @PostMapping("/{employeurID}/assignEmployeurToPrestation/{prestationID}")
     public void assignEmployeurToPrestation(@PathVariable Long employerID,@PathVariable Long prestationID){
         prestationService.assignEmployeurToPrestation(prestationID,employerID);
     }

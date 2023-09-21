@@ -1,6 +1,7 @@
 package com.example.backendstage.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "employeurs")
@@ -40,9 +42,9 @@ public class Employeur {
     @Column
     private Date createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "employeur")
-    @JsonManagedReference
-    private List<Candidat> candidatList;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "employeurs" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Candidat> candidatSet ;
 
     @OneToMany
     @JoinColumn(name = "prestation_id")
